@@ -228,10 +228,10 @@ export const updateUser = async (req, res = response) => {
     }
 }
 
-export const createAddAdmin = async (res) => {
+export const createAddAdmin = async () => {
     try {
 
-        await User.deleteOne({ role: "ADMIN" });
+        await User.deleteOneAndDelete({ username: "Administrador" });
 
         const encryptedPassword = await hash("Admin100");
         const adminUser = new User({
@@ -246,17 +246,10 @@ export const createAddAdmin = async (res) => {
 
         await adminUser.save();
 
-        return res.status(200).json({
-            success: true,
-            msg: "Usuario ADMIN se ha creado con éxito"
-        })
+        console.log("Usuario ADMIN creado con éxito");
     
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            msg: 'Error al crear el usuario ADMIN',
-            error
-        })
+        console.error("Error al crear el usuario ADMIN: ", error);
     }
 }
 
