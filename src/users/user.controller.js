@@ -228,7 +228,7 @@ export const updateUser = async (req, res = response) => {
     }
 }
 
-export const createAddAdmin = async () => {
+export const createAddAdmin = async (res) => {
     try {
 
         await User.deleteOne({ role: "ADMIN" });
@@ -246,10 +246,17 @@ export const createAddAdmin = async () => {
 
         await adminUser.save();
 
-        console.log("Usuario ADMIN creado con éxito");
+        return res.status(200).json({
+            success: true,
+            msg: "Usuario ADMIN se ha creado con éxito"
+        })
     
     } catch (error) {
-        console.log("Error al crear el usuario ADMIN: ", error);
+        return res.status(500).json({
+            success: false,
+            msg: 'Error al crear el usuario ADMIN',
+            error
+        })
     }
 }
 
