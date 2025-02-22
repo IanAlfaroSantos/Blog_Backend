@@ -5,6 +5,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { dbConnection } from './mongo.js';
+import userRoutes from '../src/users/user.routes.js';
+import { createAddAdmin } from '../src/users/user.controller.js';
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -15,13 +17,14 @@ const middlewares = (app) => {
 }
 
 const routes = (app) => {
-
+    app.use('/opinionManager/v1/users', userRoutes);
 };
 
 const conectarDB = async () => {
     try {
         await dbConnection();
         console.log('¡¡Conexión a la base de datos exitosa!!');
+        await createAddAdmin();
     } catch (error) {
         console.error('Error al conectar a la base de datos:', error);
         process.exit(1);
