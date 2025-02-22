@@ -230,14 +230,14 @@ export const updateUser = async (req, res = response) => {
 
 export const createAddAdmin = async () => {
     try {
-        
+
         await User.findOneAndDelete({ username: "Administrador" })
 
         const encryptedPassword = await hash("Admin100");
         const adminUser = new User({
             name: "Ian",
             surname: "Alfaro",
-            username: "Administrador",
+            username: "Administrador".toLowerCase(),
             email: "useradmin@gmail.com",
             phone: "78363432",
             password: encryptedPassword,
