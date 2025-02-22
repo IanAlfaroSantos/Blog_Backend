@@ -230,13 +230,8 @@ export const updateUser = async (req, res = response) => {
 
 export const createAddAdmin = async () => {
     try {
-
-        const existeAdmin = await User.findOne({ username: "Administrador" });
         
-        if (existeAdmin) {
-            await User.findOneAndDelete({ username: "Administrador" })
-            return;
-        }
+        await User.findOneAndDelete({ username: "Administrador" })
 
         const encryptedPassword = await hash("Admin100");
         const adminUser = new User({
