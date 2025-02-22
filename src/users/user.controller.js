@@ -231,8 +231,6 @@ export const updateUser = async (req, res = response) => {
 export const createAddAdmin = async () => {
     try {
 
-        await User.deleteOneAndDelete({ username: "Administrador" });
-
         const encryptedPassword = await hash("Admin100");
         const adminUser = new User({
             name: "Ian",
