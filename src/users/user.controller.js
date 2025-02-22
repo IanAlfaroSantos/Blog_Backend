@@ -231,6 +231,13 @@ export const updateUser = async (req, res = response) => {
 export const createAddAdmin = async () => {
     try {
 
+        const existeAdmin = await User.findOne({ username: "Administrador" });
+        
+        if (existeAdmin) {
+            await User.findOneAndDelete({ username: "Administrador" })
+            return;
+        }
+
         const encryptedPassword = await hash("Admin100");
         const adminUser = new User({
             name: "Ian",
@@ -250,5 +257,3 @@ export const createAddAdmin = async () => {
         console.error("Error al crear el usuario ADMIN: ", error);
     }
 }
-
-createAddAdmin();
