@@ -101,7 +101,7 @@ export const updateCategorie = async (req, res = response) => {
         
         const { id } = req.params;
         const { _id, ...data } = req.body;
-        const { name } = req.body;
+        let { name } = req.body;
 
         if (name) {
             name = name.toLowerCase();
@@ -119,7 +119,7 @@ export const updateCategorie = async (req, res = response) => {
 
         const categorieGeneral = await Categorie.findOne({ name: "General".toLowerCase() });
         
-        if (categorieGeneral && id === categorieGeneral._id.toString() === id.trim()) {
+        if (categorieGeneral && id === categorieGeneral._id.toString()) {
             return res.status(400).json({
                 success: false,
                 msg: 'No puedes editar la categoría por defecto General'
@@ -162,25 +162,26 @@ export const deleteCategorie = async (req, res = response) => {
         
         const { id } = req.params;
 
-        const categorie = await Categorie.findByIdAndUpdate(id, { estado: false }, { new: true });
-
+        
         const authenticatedCategorie = req.categorie;
-
+        
         if (req.user.role !== "ADMIN") {
             return res.status(400).json({
                 success: false,
                 msg: 'No tienes permisos para eliminar categorias'
             });
         }
-
+        
         const categorieGeneral = await Categorie.findOne({ name: "General".toLowerCase() });
-
+        
         if (categorieGeneral && id === categorieGeneral._id.toString()) {
             return res.status(400).json({
                 success: false,
                 msg: 'No puedes eliminar la categoría por defecto General'
             })
         }
+        
+        const categorie = await Categorie.findByIdAndUpdate(id, { estado: false }, { new: true });
 
         res.status(200).json({
             success: true,
