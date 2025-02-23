@@ -149,7 +149,6 @@ export const updateCategorie = async (req, res = response) => {
         });
 
     } catch (error) {
-        console.log("categorieGeneral:", categorieGeneral);
         res.status(500).json({
             success: false,
             msg: 'Error al actualizar la categoría',
