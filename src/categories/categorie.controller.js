@@ -117,7 +117,7 @@ export const updateCategorie = async (req, res = response) => {
             });
         }
 
-        const categorieGeneral = await Categorie.findOne({ name: "General" });
+        const categorieGeneral = await Categorie.findOne({ name: "General".toLowerCase() });
         
         if (categorieGeneral && id === categorieGeneral._id.toString() === id.trim()) {
             return res.status(400).json({
