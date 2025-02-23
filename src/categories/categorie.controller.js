@@ -245,6 +245,6 @@ export const defaultCategorie = async () => {
         console.log("Categoria General creada con éxito");
 
     } catch (error) {
-        console.error("Error al crear la categoria General: ", error)
+        console.error("Error al crear la categoria General: ", error);
     }
 }
