@@ -233,7 +233,7 @@ export const restoreCategorie = async (req, res = response) => {
 export const defaultCategorie = async () => {
     try {
 
-        await Categorie.findOneAndDelete({ name: "General" });
+        await Categorie.findOneAndDelete({ name: "General".toLowerCase() });
 
         const categorieGeneral = new Categorie({
             name: "General".toLowerCase(),
