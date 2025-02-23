@@ -234,16 +234,21 @@ export const restoreCategorie = async (req, res = response) => {
 export const defaultCategorie = async () => {
     try {
 
-        await Categorie.findOneAndDelete({ name: "General".toLowerCase() });
+        const verifyCategorie = await Categorie.findOne({ name: "General".toLowerCase() });
 
-        const categorieGeneral = new Categorie({
-            name: "General".toLowerCase(),
-            description: "Categoría por defecto para publicaciones sin una categoría especifica. No se puede eliminar ni editar"
-        });
+        if (!verifyCategorie) {
+            const categorieGeneral = new Categorie({
+                name: "General".toLowerCase(),
+                description: "Categoría por defecto para publicaciones sin una categoría especifica. No se puede eliminar ni editar"
+            });
+    
+            await categorieGeneral.save();
+    
+            console.log("Categoria General creada con éxito");
+        } else {
+            console.log("Categoria General ya existe, no se volvio a crear");
+        }
 
-        await categorieGeneral.save();
-
-        console.log("Categoria General creada con éxito");
 
     } catch (error) {
         console.error("Error al crear la categoria General: ", error);

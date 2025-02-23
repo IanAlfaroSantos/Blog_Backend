@@ -231,22 +231,27 @@ export const updateUser = async (req, res = response) => {
 export const createAddAdmin = async () => {
     try {
 
-        await User.findOneAndDelete({ username: "Administrador".toLowerCase() })
+        const verifyUser = await User.findOne({ username: "Administrador".toLowerCase() })
 
-        const encryptedPassword = await hash("Admin100");
-        const adminUser = new User({
-            name: "Ian",
-            surname: "Alfaro",
-            username: "Administrador".toLowerCase(),
-            email: "useradmin@gmail.com",
-            phone: "78363432",
-            password: encryptedPassword,
-            role: "ADMIN"
-        });
+        if (!verifyUser) {
+            const encryptedPassword = await hash("Admin100");
+            const adminUser = new User({
+                name: "Ian",
+                surname: "Alfaro",
+                username: "Administrador".toLowerCase(),
+                email: "useradmin@gmail.com",
+                phone: "78363432",
+                password: encryptedPassword,
+                role: "ADMIN"
+            });
+    
+            await adminUser.save();
+    
+            console.log("Usuario ADMIN creado con éxito");
+        } else {
+            console.log("Usuario ADMIN ya existe, no se volvio a crear");
+        }
 
-        await adminUser.save();
-
-        console.log("Usuario ADMIN creado con éxito");
     
     } catch (error) {
         console.error("Error al crear el usuario ADMIN: ", error);
