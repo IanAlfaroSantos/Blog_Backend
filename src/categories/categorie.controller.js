@@ -119,7 +119,7 @@ export const updateCategorie = async (req, res = response) => {
 
         const categorieGeneral = await Categorie.findOne({ name: "General" });
         
-        if (categorieGeneral && id === categorieGeneral._id.toString()) {
+        if (categorieGeneral && id === categorieGeneral._id.toString() === id.trim()) {
             return res.status(400).json({
                 success: false,
                 msg: 'No puedes editar la categoría por defecto General'
@@ -149,6 +149,7 @@ export const updateCategorie = async (req, res = response) => {
         });
 
     } catch (error) {
+        console.log("categorieGeneral:", categorieGeneral);
         res.status(500).json({
             success: false,
             msg: 'Error al actualizar la categoría',
