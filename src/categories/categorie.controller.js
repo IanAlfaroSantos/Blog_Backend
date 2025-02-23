@@ -126,7 +126,7 @@ export const updateCategorie = async (req, res = response) => {
             })
         }
         
-        if (categorie.estado == false) {
+        if (categorie.estado === false) {
             return res.status(400).json({
                 success: false,
                 msg: 'Esta categoría no esta disponible'
@@ -232,7 +232,7 @@ export const restoreCategorie = async (req, res = response) => {
 
 export const defaultCategorie = async () => {
     try {
-        
+
         await Categorie.findOneAndDelete({ name: "General" });
 
         const categorieGeneral = new Categorie({
