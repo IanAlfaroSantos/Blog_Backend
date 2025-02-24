@@ -128,7 +128,8 @@ export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        const { _id, email, ...data } = req.body;
+        const { _id, ...data } = req.body;
+        const { email } = req.body;
         let { name } = req.body;
 
         
@@ -138,9 +139,6 @@ export const updatePublication = async (req, res = response) => {
         }
         
         const publication = await Publication.findById(id);
-        if (data.email !== publication.user.email) {
-            data.email = publication.user.email;
-        }
         if (!publication) {
             return res.status(400).json({
                 success: false,
