@@ -138,9 +138,9 @@ export const updatePublication = async (req, res = response) => {
         }
         
         const publication = await Publication.findById(id);
-        if (email) {
+        if (data.email !== publication.email) {
             data.email = publication.email;
-        }
+        }        
         if (!publication) {
             return res.status(400).json({
                 success: false,
