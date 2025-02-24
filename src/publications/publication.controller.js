@@ -222,12 +222,12 @@ export const deletePublication = async (req, res = response) => {
             });
         }
 
-        const publication = await Publication.findByIdAndUpdate(id, { estado: false }, { new: true });
+        const publicationDelete = await Publication.findByIdAndUpdate(id, { estado: false }, { new: true });
 
         res.status(200).json({
             success: true,
             msg: "Publicación eliminada con éxito",
-            publication,
+            publicationDelete,
             authenticatedPublication
         });
         
