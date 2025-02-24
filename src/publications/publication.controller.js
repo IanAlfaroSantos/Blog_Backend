@@ -130,14 +130,12 @@ export const updatePublication = async (req, res = response) => {
         const { id } = req.params;
         const { _id, email, ...data } = req.body;
         let { name } = req.body;
-        const user = await User.findOne({ email });
-        const categorie = await Categorie.findOne({ name });
-
+        
         if (name) {
-            name = name.toLowerCase();
-            data.name = name;
+            data.name = name.toLowerCase();
         }
-
+        
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -146,7 +144,8 @@ export const updatePublication = async (req, res = response) => {
         }
 
         data.user = user._id;
-
+        
+        const categorie = await Categorie.findOne({ name });
         if (!categorie) {
             return res.status(400).json({
                 success: false,
@@ -155,6 +154,14 @@ export const updatePublication = async (req, res = response) => {
         }
 
         data.categorie = categorie._id;
+
+        const verifyPublication = await Publication.findById(id);
+        if (!verifyPublication) {
+            return res.status(400).json({
+                success: false,
+                msg: "Publicación no encontrada"
+            });
+        }
 
         if (req.user._id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
             return res.status(400).json({
