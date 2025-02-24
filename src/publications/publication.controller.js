@@ -128,8 +128,7 @@ export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        const { _id, ...data } = req.body;
-        const { email } = req.body.user;
+        const { _id, email, ...data } = req.body;
         let { name } = req.body;
 
         
@@ -153,7 +152,7 @@ export const updatePublication = async (req, res = response) => {
             })
         }
         
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: publication.email });
         if (!user) {
             return res.status(400).json({
                 success: false,
