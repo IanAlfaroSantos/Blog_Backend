@@ -215,7 +215,7 @@ export const deletePublication = async (req, res = response) => {
 
         const authenticatedPublication = req.publication;
 
-        if (req.user.id !== id && req.user.role !== "ADMIN") {
+        if (req.user.id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
             return res.status(400).json({
                 success: false,
                 msg: "No tiene permiso para eliminar una publicación que no es suya"
