@@ -152,7 +152,7 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
-        if (req.user.id !== id && req.user.role !== "ADMIN") {
+        if (req.user.id.toString() !== id && req.user.role !== "ADMIN") {
             return res.status(400).json({
                 success: false,
                 msg: "No tiene permiso para actualizar una publicación que no es suya"
