@@ -152,7 +152,7 @@ export const updatePublication = async (req, res = response) => {
             })
         }
         
-        const user = await User.findOne({ email: publication.email });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
                 success: false,
