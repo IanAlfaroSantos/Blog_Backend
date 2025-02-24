@@ -132,7 +132,8 @@ export const updatePublication = async (req, res = response) => {
         let { name } = req.body;
         
         if (name) {
-            data.name = name.toLowerCase();
+            name = name.toLowerCase();
+            data.name = name;
         }
         
         const user = await User.findOne({ email });
