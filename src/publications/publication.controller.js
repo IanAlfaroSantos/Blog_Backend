@@ -132,10 +132,7 @@ export const updatePublication = async (req, res = response) => {
         let { name } = req.body;
 
         if (email) {
-            return res.status(400).json({
-                success: false,
-                msg: "No se puede editar el email, se dejo el que ya tenia"
-            })
+            data.email = publication.email;
         }
         
         if (name) {
