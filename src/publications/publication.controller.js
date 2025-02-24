@@ -25,23 +25,19 @@ export const savePublication = async (req, res) => {
 
         const publication = await Publication.create({
             ...data,
-            title: data.title,
-            content: data.content,
             user: user._id,
             email: user.email,
             categorie: categorie._id,
             name: categorie.name
         });
 
-        const userDetails = await Publication.findById(publication._id).populate('user');
-        const categorieDetails = await Publication.findById(publication._id).populate('categorie');
+        const publicationDetails = await Publication.findById(publication._id)
+            .populate('user')
+            .populate('categorie');
 
         const details = {
-            user: {
-                userDetails
-            },
-            categorie: {
-                categorieDetails
+            detailsPublication: {
+                publicationDetails
             }
         }
 
