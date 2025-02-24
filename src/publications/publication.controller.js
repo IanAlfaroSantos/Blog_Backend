@@ -135,6 +135,13 @@ export const updatePublication = async (req, res = response) => {
             name = name.toLowerCase();
             data.name = name;
         }
+
+        if (publication.estado === false) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Esta publicación no esta disponible'
+            })
+        }
         
         const user = await User.findOne({ email });
         if (!user) {
