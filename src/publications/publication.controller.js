@@ -68,8 +68,8 @@ export const getPublications = async (req = request, res = response) => {
         const [total, publications] = await Promise.all([
             Publication.countDocuments(query),
             Publication.find(query)
-           .populate('user')
-           .populate('categorie')
+           .populate('User')
+           .populate('Categorie')
            .skip(Number(desde))
            .limit(Number(limite))
         ])
