@@ -1,4 +1,5 @@
 import Categorie from './categorie.model.js';
+import Publication from '../publications/publication.model.js';
 import { request, response } from 'express';
 
 export const saveCategorie = async (req, res) => {
@@ -142,6 +143,13 @@ export const updateCategorie = async (req, res = response) => {
 
         const updateCategorie = await Categorie.findByIdAndUpdate(id, data, { new: true });
 
+        if (categorie.name !== updateCategorie.name) {
+            await Publication.updateMany(
+                { categorie: id },
+                { $set: { name: updateCategorie.name } }
+            );
+        }
+
         res.status(200).json({
             success: true,
             msg: 'Categoría actualizada exitosamente',
@@ -164,6 +172,8 @@ export const deleteCategorie = async (req, res = response) => {
 
         
         const authenticatedCategorie = req.categorie;
+
+        await Publication.deleteMany({ categorie: id });
         
         if (req.user.role !== "ADMIN") {
             return res.status(400).json({

@@ -1,5 +1,6 @@
 import User from '../users/user.model.js';
 import Categorie from '../categories/categorie.model.js';
+import Publication from '../publications/publication.model.js';
 
 export const existenteEmail = async (email = ' ') => {
 
@@ -33,6 +34,15 @@ export const existeCategorieById = async (id = '') => {
     const existeCategorie = await Categorie.findById(id);
 
     if (!existeCategorie) {
+        throw new Error(`El ID ${ id } no existe en la base de datos`);
+    }
+}
+
+export const existePublicationById = async (id = '') => {
+
+    const existePublication = await Publication.findById(id);
+
+    if (!existePublication) {
         throw new Error(`El ID ${ id } no existe en la base de datos`);
     }
 }

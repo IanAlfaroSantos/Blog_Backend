@@ -10,6 +10,7 @@ import { createAddAdmin } from '../src/users/user.controller.js';
 import { defaultCategorie } from '../src/categories/categorie.controller.js';
 import userRoutes from '../src/users/user.routes.js';
 import categorieRoutes from '../src/categories/categorie.routes.js';
+import publicationRoutes from '../src/publications/publication.routes.js';
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -23,6 +24,7 @@ const middlewares = (app) => {
 const routes = (app) => {
     app.use('/opinionManager/v1/users', userRoutes);
     app.use('/opinionManager/v1/categories', categorieRoutes);
+    app.use('/opinionManager/v1/publications', publicationRoutes);
 };
 
 const conectarDB = async () => {
