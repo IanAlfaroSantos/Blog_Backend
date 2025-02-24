@@ -18,12 +18,12 @@ const PublicationSchema = Schema({
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
         required: [true, "El usuario de la publicacion es obligatorio"]
     },
     categorie: {
         type: Schema.Types.ObjectId,
-        ref: "categorie",
+        ref: "Categorie",
         required: [true, "La categoria de la publicacion es obligatoria"]
     }
 }, {
