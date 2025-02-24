@@ -198,7 +198,6 @@ export const updatePublication = async (req, res = response) => {
         res.status(200).json({
             success: true,
             msg: "Publicación actualizada con éxito",
-            publicationUpdate,
             details
         });
         
