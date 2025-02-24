@@ -129,8 +129,14 @@ export const updatePublication = async (req, res = response) => {
 
         const { id } = req.params;
         const { _id, email, ...data } = req.body;
-        const user = await User.findOne({ email: email.toLowerCase() });
+        let { name } = req.body;
+        const user = await User.findOne({ email });
         const categorie = await Categorie.findOne({ name: name.toLowerCase() });
+
+        if (name) {
+            name = name.toLowerCase();
+            data.name = name;
+        }
 
         if (!user) {
             return res.status(400).json({
