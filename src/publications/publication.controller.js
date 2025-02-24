@@ -136,8 +136,8 @@ export const updatePublication = async (req, res = response) => {
             data.name = name;
         }
 
-        const verifyPublication = await Publication.findById(id);
-        if (!verifyPublication) {
+        const publication = await Publication.findById(id);
+        if (!publication) {
             return res.status(400).json({
                 success: false,
                 msg: "Publicación no encontrada"
