@@ -129,7 +129,7 @@ export const updatePublication = async (req, res = response) => {
 
         const { id } = req.params;
         const { _id, ...data } = req.body;
-        const { email } = req.body;
+        const { email } = req.body.email;
         let { name } = req.body;
 
         
