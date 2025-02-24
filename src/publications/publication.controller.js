@@ -7,7 +7,7 @@ export const savePublication = async (req, res) => {
     try {
 
         const data = req.body;
-        const user = await User.findOne({ email: data.email.toLowerCase() });
+        const user = await User.findOne({ username: data.username.toLowerCase() });
         const categorie = await Categorie.findOne({ name: data.name.toLowerCase() });
 
         if (!user) {
@@ -27,7 +27,7 @@ export const savePublication = async (req, res) => {
         const publication = await Publication.create({
             ...data,
             user: user._id,
-            email: user.email,
+            username: user.username,
             categorie: categorie._id,
             name: categorie.name
         });
@@ -128,7 +128,7 @@ export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        const { _id, email, ...data } = req.body;
+        const { _id, username, ...data } = req.body;
         let { name } = req.body;
 
         
@@ -152,7 +152,7 @@ export const updatePublication = async (req, res = response) => {
             })
         }
         
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username: username });
         if (!user) {
             return res.status(400).json({
                 success: false,
