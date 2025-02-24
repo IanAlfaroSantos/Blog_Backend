@@ -179,6 +179,8 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
+        delete data.email;
+
         const publicationUpdate = await Publication.findByIdAndUpdate(id, data, { new: true });
 
         res.status(200).json({
