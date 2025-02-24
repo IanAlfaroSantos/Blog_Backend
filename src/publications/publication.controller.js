@@ -145,6 +145,8 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
+        data.user = user._id;
+
         if (!categorie) {
             return res.status(400).json({
                 success: false,
