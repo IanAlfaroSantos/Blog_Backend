@@ -128,8 +128,15 @@ export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        const { email, ...data } = req.body;
+        const { _id, email, ...data } = req.body;
         let { name } = req.body;
+
+        if (email) {
+            return res.status(400).json({
+                success: false,
+                msg: "No se puede editar el email, se dejo el que ya tenia"
+            })
+        }
         
         if (name) {
             name = name.toLowerCase();
