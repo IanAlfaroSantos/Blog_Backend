@@ -215,6 +215,14 @@ export const deletePublication = async (req, res = response) => {
 
         const authenticatedPublication = req.publication;
 
+        const publication = await Publication.findById(id);
+        if (!publication) {
+            return res.status(400).json({
+                success: false,
+                msg: "Publicación no encontrada"
+            });
+        }
+
         if (req.user.id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
             return res.status(400).json({
                 success: false,
