@@ -131,16 +131,16 @@ export const updatePublication = async (req, res = response) => {
         const { _id, email, ...data } = req.body;
         let { name } = req.body;
 
-        if (email) {
-            data.email = publication.email;
-        }
         
         if (name) {
             name = name.toLowerCase();
             data.name = name;
         }
-
+        
         const publication = await Publication.findById(id);
+        if (email) {
+            data.email = publication.email;
+        }
         if (!publication) {
             return res.status(400).json({
                 success: false,
