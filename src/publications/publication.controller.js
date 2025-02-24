@@ -179,12 +179,12 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
-        const publication = await Publication.findByIdAndUpdate(id, data, { new: true });
+        const publicationUpdate = await Publication.findByIdAndUpdate(id, data, { new: true });
 
         res.status(200).json({
             success: true,
             msg: "Publicación actualizada con éxito",
-            publication: publication
+            publicationUpdate
         });
         
     } catch (error) {
