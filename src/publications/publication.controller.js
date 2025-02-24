@@ -152,15 +152,13 @@ export const updatePublication = async (req, res = response) => {
             })
         }
         
-        const user = await User.findOne({ username: username });
+        const user = await User.findOne({ username: username.toLowerCase() });
         if (!user) {
             return res.status(400).json({
                 success: false,
                 msg: "Usuario no encontrado"
             });
         }
-
-        data.user = user._id;
         
         const categorie = await Categorie.findOne({ name });
         if (!categorie) {
