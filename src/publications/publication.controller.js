@@ -1,6 +1,7 @@
 import Publication from "./publication.model.js";
 import Categorie from "../categories/categorie.model.js"
 import User from "../users/user.model.js"
+import Comment from "../comments/comment.model.js";
 import { request, response } from "express";
 
 export const savePublication = async (req, res) => {
@@ -70,6 +71,14 @@ export const getPublications = async (req = request, res = response) => {
             Publication.find(query)
            .populate('user', 'username')
            .populate('categorie', 'name')
+           .populate({
+                path: 'comment',
+                match: { estado: true },
+                populate: {
+                    path: 'user',
+                    select: 'username'
+                }
+            })
            .skip(Number(desde))
            .limit(Number(limite))
         ])

@@ -32,6 +32,10 @@ export const saveComment = async (req, res) => {
             publication: publication._id
         });
 
+        await Publication.findByIdAndUpdate(id, {
+            $push: { comments: comment._id }
+        }, { new: true });
+
         const commentDetails = await Comment.findById(comment._id)
             .populate('user', 'username')
             .populate({
