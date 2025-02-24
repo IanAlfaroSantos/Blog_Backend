@@ -25,6 +25,10 @@ const PublicationSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "Categorie",
         required: [true, "La categoria de la publicacion es obligatoria"]
+    },
+    estado: {
+        type: Boolean,
+        default: true
     }
 }, {
     timestamps: true,
