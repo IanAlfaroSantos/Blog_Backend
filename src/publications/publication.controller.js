@@ -179,14 +179,27 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
-        delete data.email;
+        if (email) {
+            delete data.email;
+        }
 
         const publicationUpdate = await Publication.findByIdAndUpdate(id, data, { new: true });
+
+        const publicationDetails = await Publication.findById(publication._id)
+            .populate('user')
+            .populate('categorie');
+
+        const details = {
+            detailsPublication: {
+                publicationDetails
+            }
+        }
 
         res.status(200).json({
             success: true,
             msg: "Publicación actualizada con éxito",
-            publicationUpdate
+            publicationUpdate,
+            details
         });
         
     } catch (error) {
