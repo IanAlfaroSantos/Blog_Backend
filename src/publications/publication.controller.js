@@ -1,4 +1,5 @@
 import Publication from "./publication.model.js";
+import Categorie from "../categories/categorie.model.js"
 import User from "../users/user.model.js"
 import { request, response } from "express";
 
@@ -7,7 +8,7 @@ export const savePublication = async (req, res) => {
 
         const data = req.body;
         const user = await User.findOne({ email: data.email.toLowerCase() });
-        const categorie = await findOne({ name: data.name.toLowerCase() });
+        const categorie = await Categorie.findOne({ name: data.name.toLowerCase() });
 
         if (!user) {
             return res.status(400).json({
