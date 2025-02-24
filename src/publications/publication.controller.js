@@ -128,7 +128,7 @@ export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        const { _id, email, ...data } = req.body;
+        const { email, ...data } = req.body;
         let { name } = req.body;
         
         if (name) {
@@ -179,11 +179,7 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
-        if (email) {
-            delete data.email;
-        }
-
-        const publicationUpdate = await Publication.findByIdAndUpdate(id, data, { new: true });
+        await Publication.findByIdAndUpdate(id, data, { new: true });
 
         const publicationDetails = await Publication.findById(publication._id)
             .populate('user')
