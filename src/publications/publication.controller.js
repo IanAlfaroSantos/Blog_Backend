@@ -136,6 +136,14 @@ export const updatePublication = async (req, res = response) => {
             data.name = name;
         }
 
+        const verifyPublication = await Publication.findById(id);
+        if (!verifyPublication) {
+            return res.status(400).json({
+                success: false,
+                msg: "Publicación no encontrada"
+            });
+        }
+
         if (publication.estado === false) {
             return res.status(400).json({
                 success: false,
@@ -163,13 +171,6 @@ export const updatePublication = async (req, res = response) => {
 
         data.categorie = categorie._id;
 
-        const verifyPublication = await Publication.findById(id);
-        if (!verifyPublication) {
-            return res.status(400).json({
-                success: false,
-                msg: "Publicación no encontrada"
-            });
-        }
 
         if (req.user._id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
             return res.status(400).json({
@@ -183,10 +184,11 @@ export const updatePublication = async (req, res = response) => {
         res.status(200).json({
             success: true,
             msg: "Publicación actualizada con éxito",
-            publication
+            publication: publication
         });
         
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             msg: "Error al actualizar la publicación",
