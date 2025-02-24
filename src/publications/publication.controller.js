@@ -33,8 +33,8 @@ export const savePublication = async (req, res) => {
         });
 
         const publicationDetails = await Publication.findById(publication._id)
-            .populate('user')
-            .populate('categorie');
+            .populate('user', 'username')
+            .populate('categorie', 'name');
 
         const details = {
             detailsPublication: {
@@ -68,8 +68,8 @@ export const getPublications = async (req = request, res = response) => {
         const [total, publications] = await Promise.all([
             Publication.countDocuments(query),
             Publication.find(query)
-           .populate('user')
-           .populate('categorie')
+           .populate('user', 'username')
+           .populate('categorie', 'name')
            .skip(Number(desde))
            .limit(Number(limite))
         ])
@@ -94,7 +94,9 @@ export const getPublicationById = async (req, res) => {
 
         const { id } = req.params;
 
-        const publication = await Publication.findById(id).populate('user').populate('categorie');
+        const publication = await Publication.findById(id)
+            .populate('user', 'username')
+            .populate('categorie', 'name');
 
         if (publication.estado === false) {
             return res.status(400).json({
@@ -181,8 +183,8 @@ export const updatePublication = async (req, res = response) => {
         await Publication.findByIdAndUpdate(id, data, { new: true });
 
         const publicationDetails = await Publication.findById(publication._id)
-            .populate('user')
-            .populate('categorie');
+            .populate('user', 'username')
+            .populate('categorie', 'name');
 
         const details = {
             detailsPublication: {
