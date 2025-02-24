@@ -152,6 +152,8 @@ export const updatePublication = async (req, res = response) => {
             });
         }
 
+        data.categorie = categorie._id;
+
         if (req.user._id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
             return res.status(400).json({
                 success: false,
