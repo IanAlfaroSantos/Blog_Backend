@@ -43,8 +43,8 @@ export const getCategories = async (req = request, res = response) => {
         const [ total, categories ] = await Promise.all([
             Categorie.countDocuments(query),
             Categorie.find(query)
-           .skip(Number(desde))
-           .limit(Number(limite))
+            .skip(Number(desde))
+            .limit(Number(limite))
         ])
 
         res.status(200).json({

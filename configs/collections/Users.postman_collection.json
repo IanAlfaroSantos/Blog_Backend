@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Kevin\",\r\n    \"surname\": \"Gutierrez\",\r\n    \"username\": \"Kevin\",\r\n    \"email\": \"kgutierrez@gmail.com\",\r\n    \"password\": \"22222222\",\r\n    \"phone\": \"17989422\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Jesus\",\r\n    \"surname\": \"Sis\",\r\n    \"username\": \"Heber\",\r\n    \"email\": \"jsis@gmail.com\",\r\n    \"password\": \"33333333\",\r\n    \"phone\": \"46545465\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Kevin\",\r\n    \"email\": \"kgutierrez@gmail.com\",\r\n    \"password\": \"22222222\"\r\n}",
+					"raw": "{\r\n    \"username\": \"Kevin\",\r\n    \"password\": \"11111111\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,7 +105,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users/67b728c31188ff9f172bc23b",
+					"raw": "http://localhost:3000/opinionManager/v1/users/67bc795415d64e9c15c65f63",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,7 +115,7 @@
 						"opinionManager",
 						"v1",
 						"users",
-						"67b728c31188ff9f172bc23b"
+						"67bc795415d64e9c15c65f63"
 					]
 				}
 			},

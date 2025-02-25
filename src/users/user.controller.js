@@ -99,8 +99,8 @@ export const getUsers = async (req = request, res = response) => {
         const [total, users] = await Promise.all([
             User.countDocuments(query),
             User.find(query)
-           .skip(Number(desde))
-           .limit(Number(limite))
+            .skip(Number(desde))
+            .limit(Number(limite))
         ])
 
         res.status(200).json({

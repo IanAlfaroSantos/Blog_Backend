@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "ad78329a-a75c-4983-9cd0-09acf5185299",
+		"name": "Publications",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41997069"
+	},
+	"item": [
+		{
+			"name": "Add Publication",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Dragon Ball Daima\",\r\n    \"content\": \"Dragon Ball Daima Goku se convierte en super sayayin fase 4\",\r\n    \"username\": \"Kevin\",\r\n    \"name\": \"ANiMe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/publications/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"publications",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Publications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/publications?limite=10&desde=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"publications"
+					],
+					"query": [
+						{
+							"key": "limite",
+							"value": "10"
+						},
+						{
+							"key": "desde",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Publication",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/publications/findPublication/67bdc9855aa9dffc0b5ec458",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"publications",
+						"findPublication",
+						"67bdc9855aa9dffc0b5ec458"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Publication",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY2NzE5NDU0YmQ2YmZlNjFjYjkiLCJpYXQiOjE3NDA0OTU3MzgsImV4cCI6MTc0MDQ5OTMzOH0.7nqGQ_p8UZzeoO2pH2l00meHHxpgAkurBEZ7-1CCs_8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Superate\",\r\n    \"content\": \"El dolor es temporal, pero el orgullo de haberlo logrado es para siempre\",\r\n    \"username\": \"Kevin\",\r\n    \"name\": \"MotIvACion\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/publications/67bdc9855aa9dffc0b5ec458",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"publications",
+						"67bdc9855aa9dffc0b5ec458"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Publication",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkZDYxMGFiM2ZkNTAxMWI0MGZhMzUiLCJpYXQiOjE3NDA0OTY4OTAsImV4cCI6MTc0MDUwMDQ5MH0.myGlN5L3F1HU8KtkZhDebHEE8KHK8QTd2ngGIvJ2VLA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/publications/67bde03b20e03a8da6340219",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"publications",
+						"67bde03b20e03a8da6340219"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

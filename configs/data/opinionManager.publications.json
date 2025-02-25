@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "67bdc9855aa9dffc0b5ec458"
+  },
+  "title": "Superate",
+  "content": "El dolor es temporal, pero el orgullo de haberlo logrado es para siempre",
+  "user": {
+    "$oid": "67bdc66719454bd6bfe61cb9"
+  },
+  "categorie": {
+    "$oid": "67bddc1e50fdb586f193e852"
+  },
+  "comment": [
+    {
+      "$oid": "67bdce5d6fc9da69ccc54b36"
+    },
+    {
+      "$oid": "67bdcec7827cee43846467b6"
+    }
+  ],
+  "estado": true,
+  "DateAndTime": "2025-02-25 13:45",
+  "createdAt": {
+    "$date": "2025-02-25T13:45:41.039Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T15:09:57.158Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bddf34232190bd1b0e5318"
+  },
+  "title": "Dragon Ball Daima",
+  "content": "Dragon Ball Daima Goku se convierte en super sayayin fase 4",
+  "user": {
+    "$oid": "67bdd610ab3fd5011b40fa35"
+  },
+  "categorie": {
+    "$oid": "67bdc6a119454bd6bfe61cc2"
+  },
+  "comment": [
+    {
+      "$oid": "67bddf61232190bd1b0e5325"
+    }
+  ],
+  "estado": false,
+  "DateAndTime": "2025-02-25 15:18",
+  "createdAt": {
+    "$date": "2025-02-25T15:18:12.433Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T15:21:47.831Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bde03b20e03a8da6340219"
+  },
+  "title": "Dragon Ball Daima",
+  "content": "Dragon Ball Daima Goku se convierte en super sayayin fase 4",
+  "user": {
+    "$oid": "67bdd610ab3fd5011b40fa35"
+  },
+  "categorie": {
+    "$oid": "67bdc6a119454bd6bfe61cc2"
+  },
+  "comment": [
+    {
+      "$oid": "67bde04a20e03a8da6340226"
+    },
+    {
+      "$oid": "67bde07020e03a8da6340235"
+    }
+  ],
+  "estado": false,
+  "DateAndTime": "2025-02-25 15:22",
+  "createdAt": {
+    "$date": "2025-02-25T15:22:35.310Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T15:24:33.030Z"
+  }
+}]

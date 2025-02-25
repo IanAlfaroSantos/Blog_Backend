@@ -1,0 +1,38 @@
+[{
+  "_id": {
+    "$oid": "67bdce5d6fc9da69ccc54b36"
+  },
+  "text": "Superemonos 🦾",
+  "user": {
+    "$oid": "67bdc66719454bd6bfe61cb9"
+  },
+  "publication": {
+    "$oid": "67bdc9855aa9dffc0b5ec458"
+  },
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-02-25T14:06:21.396Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T15:09:57.157Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdcec7827cee43846467b6"
+  },
+  "text": "Exelente Publicación",
+  "user": {
+    "$oid": "67bdc22fcb7e8665e2b56e59"
+  },
+  "publication": {
+    "$oid": "67bdc9855aa9dffc0b5ec458"
+  },
+  "estado": false,
+  "createdAt": {
+    "$date": "2025-02-25T14:08:07.560Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T16:12:08.294Z"
+  }
+}]

@@ -32,9 +32,8 @@ export const saveComment = async (req, res) => {
             publication: publication._id
         });
 
-        await Publication.findByIdAndUpdate(id, {
-            $push: { comments: comment._id }
-        }, { new: true });
+        publication.comment.push(comment._id);
+        await publication.save();
 
         const commentDetails = await Comment.findById(comment._id)
             .populate('user', 'username')
@@ -48,7 +47,7 @@ export const saveComment = async (req, res) => {
             })
 
         const details = {
-                commentDetails
+            commentDetails
         }
 
         res.status(200).json({
@@ -75,17 +74,17 @@ export const getComments = async (req = request, res = response) => {
         const [total, comments] = await Promise.all([
             Comment.countDocuments(query),
             Comment.find(query)
-           .populate('user', 'username')
-           .populate({
+            .populate('user', 'username')
+            .populate({
             path: 'publication',
                 select: 'title content',
                 populate: {
                     path: 'user',
                     select: 'username'
                 }
-           })
-           .skip(Number(desde))
-           .limit(Number(limite))
+            })
+            .skip(Number(desde))
+            .limit(Number(limite))
         ]);
 
         res.status(200).json({
@@ -126,10 +125,10 @@ export const getCommentById = async (req, res) => {
         }
 
         if (!comment) {
-             return res.status(404).json({
-                 success: false,
-                 msg: 'Comentario no encontrado'
-             });
+            return res.status(404).json({
+                success: false,
+                msg: 'Comentario no encontrado'
+            });
         }
 
         res.status(200).json({
@@ -142,6 +141,113 @@ export const getCommentById = async (req, res) => {
             success: false,
             msg: 'Error al obtener comentario por ID',
             error
+        });
+    }
+}
+
+export const updateComment = async (req, res = response) => {
+    try {
+
+        const { id } = req.params;
+        const { _id, username, publication, ...data } = req.body;
+
+        const comment = await Comment.findById(id);
+        if (!comment) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Comentario no encontrado'
+            });
+        }
+
+        if (comment.estado === false) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Este comentario no esta disponible'
+            });
+        }
+        
+        if (req.user._id.toString() !== comment.user.toString() && req.user.role !== "ADMIN") {
+            return res.status(400).json({
+                success: false,
+                msg: "No tiene permiso para actualizar un comentario que no es suyo"
+            });
+        }
+        
+        const updateComment = await Comment.findByIdAndUpdate(id, data, { new: true });
+
+        if (comment.text !== updateComment.text) {
+            await Publication.updateMany(
+                { comment: id },
+                { $set: { text: updateComment.text } }
+            )
+        }
+        
+        const commentDetails = await Comment.findById(comment._id)
+        .populate('user', 'username')
+        .populate({
+                path: 'publication',
+                select: 'title content',
+                populate: {
+                    path: 'user',
+                    select: 'username'
+                }
+            })
+            
+            const details = {
+                commentDetails
+            }
+            
+            res.status(200).json({
+                success: true,
+                msg: 'Comentario actualizado con éxito',
+                details
+            });
+            
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                msg: 'Error al actualizar comentario',
+                error
+            });
+        }
+    }
+    
+    export const deleteComment = async (req, res = response) => {
+        try {
+            
+            const { id } = req.params;
+            
+            const authenticatedComment = req.comment;
+            
+            const comment = await Comment.findById(id);
+            if (!comment) {
+                return res.status(400).json({
+                    success: false,
+                    msg: 'Comentario no encontrado'
+                });
+            }
+            
+            if (req.user._id.toString() !== comment.user.toString() && req.user.role !== "ADMIN") {
+                return res.status(400).json({
+                    success: false,
+                    msg: "No tiene permiso para actualizar un comentario que no es suyo"
+                });
+            }
+
+            const commentDelete = await Comment.findByIdAndUpdate(id, { estado: false }, { new: true });
+
+            res.status(200).json({
+                success: true,
+                msg: 'Comentario eliminado con éxito',
+                commentDelete,
+                authenticatedComment
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                msg: 'Error al eliminar comentario',
+                error
         });
     }
 }

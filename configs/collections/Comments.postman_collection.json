@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "1e6e3f97-eebd-4158-b3e1-b7ba7db337b2",
+		"name": "Comments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41997069"
+	},
+	"item": [
+		{
+			"name": "Add Comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Exelente Publicación\",\r\n    \"username\": \"Administrador\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/comments/67bde03b20e03a8da6340219",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"comments",
+						"67bde03b20e03a8da6340219"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/comments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Comment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/comments/findComment/67bdcec7827cee43846467b6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"comments",
+						"findComment",
+						"67bdcec7827cee43846467b6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Comments",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzIyZmNiN2U4NjY1ZTJiNTZlNTkiLCJpYXQiOjE3NDA0OTYxNjMsImV4cCI6MTc0MDQ5OTc2M30.44L3ot-IIJfGVecUZFQweDy-ISti-5KYJ2_5Kecw9e0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"Superemonos 🦾\",\r\n    \"username\": \"kevin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/comments/67bdce5d6fc9da69ccc54b36",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"comments",
+						"67bdce5d6fc9da69ccc54b36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Comments",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzIyZmNiN2U4NjY1ZTJiNTZlNTkiLCJpYXQiOjE3NDA0OTk4ODAsImV4cCI6MTc0MDUwMzQ4MH0.mELzXvcglSS36As_U-nk0X-HGsrhmj-V3YolMNO7r4Q",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/opinionManager/v1/comments/67bdcec7827cee43846467b6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"opinionManager",
+						"v1",
+						"comments",
+						"67bdcec7827cee43846467b6"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

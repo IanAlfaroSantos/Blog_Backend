@@ -1,7 +1,7 @@
 import Publication from "./publication.model.js";
 import Categorie from "../categories/categorie.model.js"
-import User from "../users/user.model.js"
 import Comment from "../comments/comment.model.js";
+import User from "../users/user.model.js"
 import { request, response } from "express";
 
 export const savePublication = async (req, res) => {
@@ -69,18 +69,19 @@ export const getPublications = async (req = request, res = response) => {
         const [total, publications] = await Promise.all([
             Publication.countDocuments(query),
             Publication.find(query)
-           .populate('user', 'username')
-           .populate('categorie', 'name')
-           .populate({
+            .populate('user', 'username')
+            .populate('categorie', 'name')
+            .populate({
                 path: 'comment',
                 match: { estado: true },
+                select: 'text',
                 populate: {
                     path: 'user',
                     select: 'username'
                 }
             })
-           .skip(Number(desde))
-           .limit(Number(limite))
+            .skip(Number(desde))
+            .limit(Number(limite))
         ])
 
         res.status(200).json({
@@ -105,7 +106,16 @@ export const getPublicationById = async (req, res) => {
 
         const publication = await Publication.findById(id)
             .populate('user', 'username')
-            .populate('categorie', 'name');
+            .populate('categorie', 'name')
+            .populate({
+                path: 'comment',
+                match: { estado: true },
+                select: 'text',
+                populate: {
+                    path: 'user',
+                    select: 'username'
+                }
+            });
 
         if (publication.estado === false) {
             return res.status(400).json({
@@ -238,6 +248,8 @@ export const deletePublication = async (req, res = response) => {
                 msg: "No tiene permiso para eliminar una publicación que no es suya"
             });
         }
+
+        await Comment.deleteMany({ publication: id });
 
         const publicationDelete = await Publication.findByIdAndUpdate(id, { estado: false }, { new: true });
 
