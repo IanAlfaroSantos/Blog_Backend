@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const CategorieSchema = Schema({
+const CourseSchema = Schema({
     name: {
         type: String,
         required: [ true, "El nombre es requerido" ],
@@ -20,4 +20,4 @@ const CategorieSchema = Schema({
     versionKey: false
 })
 
-export default model("Categorie", CategorieSchema);
+export default model("Course", CourseSchema);

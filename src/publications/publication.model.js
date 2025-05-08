@@ -1,20 +1,20 @@
+import dayjs from "dayjs";
 import { Schema, model } from "mongoose";
 
 const PublicationSchema = Schema({
     title: {
         type: String,
-        required: [true, "El título de la publicación es obligatorio"]
+        required: [true, "El título de la publicación es obligatorio"],
+        trim: true
     },
     content: {
         type: String,
-        required: [true, "El contenido de la publicación es obligatorio"]
+        required: [true, "El contenido de la publicación es obligatorio"],
+        trim: true
     },
     DateAndTime: {
         type: String,
-        default: () => {
-            const current = new Date();
-            return current.toISOString().slice(0, 16).replace("T", " ");
-        }
+        default: () => dayjs().format("DD-MM-YYYY HH:mm:ss")
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -25,6 +25,11 @@ const PublicationSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "Categorie",
         required: [true, "La categoria de la publicacion es obligatoria"]
+    },
+    course: {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+        required: [true, "El curso de la publicacion es obligatorio"]
     },
     comment: [{
         type: Schema.Types.ObjectId,

@@ -1,57 +1,44 @@
 import User from './user.model.js'
-import { hash, verify } from 'argon2'
+import { hash } from 'argon2'
 import { generateJWT } from '../helpers/generate-jwt.js'
-import { response, request } from 'express'
+import { request, response } from 'express'
+import { crearAdminSiNoExiste, existeUser, existeUserById, noActualizarAdmin, noExistenUserRole, passwordLength, peticionPassword, phoneLength, soloAdmin, statusUser, validarPassword, validarPasswordParaEliminar, validarRole, validarUsernameParaEliminar, verificarUsuarioExistente } from '../helpers/db-validator-users.js'
 
 export const login = async (req, res) => {
 
-    const { email, password, username } = req.body
+    const { email, password, username } = req.body || {};
 
     try {
         const lowerEmail = email ? email.toLowerCase() : null;
         const lowerUsername = username ? username.toLowerCase() : null;
 
         const user = await User.findOne({
-            $or: [{ email: lowerEmail }, { username: lowerUsername }]
+            $or: [
+                { email: lowerEmail },
+                { username: lowerUsername }
+            ]
         });
 
-        if (!user) {
-            return res.status(404).json({
-                msg: 'Credenciales incorrectas, correo o nombre de usuario no existe en la base de datos'
-            })
-        }
-
-        if (!user.estado) {
-            return res.status(404).json({
-                msg: 'El usuario no existe en la base de datos'
-            })
-        }
-
-        const validPassword = await verify(user.password, password);
-
-        if (!validPassword) {
-            return res.status(404).json({
-                msg: 'Contraseña incorrecta'
-            })
-        }
+        await existeUser(lowerUsername, lowerEmail);
+        await statusUser(user);
+        await validarPassword(user, password);
 
         const token = await generateJWT(user.id);
 
         res.status(200).json({
-            msg: '¡¡Inicio de Sesión exitoso!!',
+            success: true,
+            msg: 'Sesión iniciada exitosamente!!',
             userDetails: {
                 username: user.username,
                 token: token
             }
         })
 
-    } catch (e) {
-        
-        console.error(e);
-
+    } catch (error) {
         return res.status(500).json({
-            msg: 'Error no se pudo iniciar la sesión del usuario',
-            error: e.message
+            success: false,
+            msg: 'Error al iniciar la sesión',
+            error: error.message
         })
     }
 }
@@ -59,32 +46,34 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
     try {
         
-        const data = req.body;
+        const data = req.body || {};
 
         const encryptedPassword = await hash(data.password);
         
+        await passwordLength(data.password);
+        await phoneLength(data.phone);
+
         const user = await User.create({
             name: data.name,
             surname: data.surname,
-            username: data.username.toLowerCase(),
-            email: data.email.toLowerCase(),
+            username: data.username,
+            email: data.email,
             phone: data.phone,
             password: encryptedPassword
         })
 
         res.status(200).json({
-            msg: '¡¡Usuario registrado con éxito!!',
+            success: true,
+            msg: 'Usuario registrado exitosamente!!',
             userDetails: {
                 username: user.username
             }
         })
 
     } catch (error) {
-        
-        console.error(error);
-
         return res.status(500).json({
-            msg: 'User registration failded',
+            success: false,
+            msg: 'Error al registrar usuario',
             error: error.message
         })
     }
@@ -93,10 +82,10 @@ export const register = async (req, res) => {
 export const getUsers = async (req = request, res = response) => {
     try {
 
-        const { limite = 10, desde = 0 } = req.body;
+        const { limite = 10, desde = 0 } = req.query || {};
         const query = { estado: true };
 
-        const [total, users] = await Promise.all([
+        const [ total, users ] = await Promise.all([
             User.countDocuments(query),
             User.find(query)
             .skip(Number(desde))
@@ -106,15 +95,15 @@ export const getUsers = async (req = request, res = response) => {
         res.status(200).json({
             success: true,
             total,
+            msg: "Usuarios obtenidos exitosamente!!",
             users
         })
     
     } catch (error) {
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al obtener los usuarios',
-            error
+            error: error.message
         })       
     }
 }
@@ -122,35 +111,44 @@ export const getUsers = async (req = request, res = response) => {
 export const getUserById = async (req, res) => {
     try {
         
-        const { id } = req.params;
-
-        const user = await User.findById(id);
-
-        if (user.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Este usuario buscado no esta disponible'
-            })
-        }
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                msg: 'Usuario no encontrado'
-            })
-        }
+        const user = req.user;
 
         res.status(200).json({
             success: true,
+            msg: "Usuario encontrado exitosamente!!",
             user
         })
 
     } catch (error) {
-        
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al obtener el usuario',
-            error
+            error: error.message
+        })
+    }
+}
+
+export const getUserByRole = async (req, res) => {
+    try {
+        const { role } = req.params || {};
+
+        await validarRole(role);
+
+        const users = await User.find({ role });
+
+        await noExistenUserRole(users, role);
+
+        res.status(200).json({
+            success: true,
+            msg: "Usuarios obtenidos exitosamente!!",
+            users
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error al buscar usuarios por rol",
+            error: error.message
         })
     }
 }
@@ -158,102 +156,101 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res = response) => {
     try {
         
-        const { id } = req.params;
-        const { _id, email, role, password, currentPassword, ...data } = req.body;
-        let { username } = req.body;
+        const user = req.user;
+        const { _id, email, role, password, currentPassword, ...data } = req.body || {};
+        const { username, phone } = req.body || {};
 
-        if (username) {
-            username = username.toLowerCase();
-            data.username = username;
-        }
+        await phoneLength(phone);
+        await passwordLength(password);
+        await noActualizarAdmin(user._id);
+        await verificarUsuarioExistente(username, user);
+        await peticionPassword(user, password, currentPassword);
 
-        const user = await User.findById(id);
-        if (!user) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Usuario no encontrado'
-            })
-        }
-
-        if (user.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Este usuario no esta disponible'
-            })
-        }
-
-        if (req.user.id !== id && req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: 'No tiene permiso para actualizar un perfil que no es suyo'
-            })
-        }
-
-        if (password) {
-            if (!currentPassword) {
-                return res.status(400).json({
-                    success: false,
-                    msg: 'Debe proporcionar la contraseña actual para cambiarla'
-                })
-            }
-            
-            const verifyPassword = await verify(user.password, currentPassword);
-            
-            if (!verifyPassword) {
-                return res.status(400).json({
-                    success: false,
-                    msg: 'Contraseña actual incorrecta'
-                })
-            }
-
-            data.password = await hash(password);
-        }
-
-
-        const updateUser = await User.findByIdAndUpdate(id, data, { new: true });
+        const updateUser = await User.findByIdAndUpdate(user._id, data, { new: true });
 
         res.status(200).json({
             success: true,
-            msg: "Usuario Actualizado",
+            msg: "Usuario Actualizado exitosamente!!",
             updateUser
         })
 
     } catch (error) {
-        
-        res.status(500).json({
+        console.log(error);
+        return res.status(500).json({
             success: false,
             msg: 'Error al actualizar el usuario',
-            error
+            error: error.message
         })
+    }
+}
+
+export const updateRole = async (req, res = response) => {
+    try {
+
+        const { id } = req.params;
+        let { role } = req.body || {};
+
+        await existeUserById(id);
+
+        const user = await User.findById(id);
+
+        await soloAdmin(req);
+        await noActualizarAdmin(id);
+        await statusUser(user);
+        
+        const roleUpdate = await User.findByIdAndUpdate(id, { role }, { new: true });
+        
+        res.status(200).json({
+            success: true,
+            msg: 'Role actualizado exitosamente!!',
+            roleUpdate
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: 'Error al actualizar Role',
+            error: error.message
+        });
+    }
+}
+
+export const deleteUser = async (req, res = response) => {
+
+    try {
+        const user = req.user;
+        const { password, username } = req.body || {};
+
+        await noActualizarAdmin(user._id);
+        await validarUsernameParaEliminar(username, user);
+        await validarPasswordParaEliminar(password, user);
+        
+        const userDelete = await User.findByIdAndUpdate(user._id, { estado: false }, { new: true });
+
+        res.status(200).json({
+            success: true,
+            msg: 'Usuario eliminado exitosamente!!',
+            userDelete
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: 'Error al eliminar usuario',
+            error: error.message
+        });
     }
 }
 
 export const createAddAdmin = async () => {
     try {
 
-        const verifyUser = await User.findOne({ username: "Administrador".toLowerCase() })
+        await crearAdminSiNoExiste();
 
-        if (!verifyUser) {
-            const encryptedPassword = await hash("Admin100");
-            const adminUser = new User({
-                name: "Ian",
-                surname: "Alfaro",
-                username: "Administrador".toLowerCase(),
-                email: "useradmin@gmail.com",
-                phone: "78363432",
-                password: encryptedPassword,
-                role: "ADMIN"
-            });
-    
-            await adminUser.save();
-    
-            console.log("Usuario ADMIN creado con éxito");
-        } else {
-            console.log("Usuario ADMIN ya existe, no se volvio a crear");
-        }
-
-    
     } catch (error) {
-        console.error("Error al crear el usuario ADMIN: ", error);
+        console.log(error);
+        console.log(" ");
+        console.error('Error al crear el Usuario ADMIN: ', error.message);
+        console.log(" ");
     }
 }

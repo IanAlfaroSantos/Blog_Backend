@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { existePublicationById } from "../helpers/db-validator.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
 import { savePublication, getPublications, getPublicationById, updatePublication, deletePublication } from "./publication.controller.js";
@@ -19,10 +18,9 @@ router.get(
 );
 
 router.get(
-    '/findPublication/:id',
+    '/:id',
     [
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existePublicationById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     getPublicationById
@@ -32,8 +30,7 @@ router.put(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existePublicationById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     updatePublication
@@ -43,8 +40,7 @@ router.delete(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existePublicationById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     deletePublication

@@ -1,24 +1,20 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { existeUserById } from "../helpers/db-validator.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
 import { deleteFileOnError } from "../middlewares/delete-file-on-error.js"
-import { login, register, getUsers, getUserById, updateUser } from "./user.controller.js";
-import { validatorRegister, validatorLogin } from "../middlewares/validator.js";
+import { login, register, getUsers, getUserById, updateUser, getUserByRole, updateRole, deleteUser } from "./user.controller.js";
 
 const router = Router();
 
 router.post(
     '/login',
-    validatorLogin,
     deleteFileOnError,
     login
 );
 
 router.post(
     '/register',
-    validatorRegister,
     deleteFileOnError,
     register
 );
@@ -29,24 +25,37 @@ router.get(
 );
 
 router.get(
-    '/:id',
-    [
-        check('id', 'No es ID válido').isMongoId(),
-        check('id').custom(existeUserById),
-        validarCampos
-    ],
+    '/search/',
+    validarUserJWT,
     getUserById
 );
 
+router.get(
+    '/role/:role',
+    getUserByRole
+);
+
 router.put(
-    '/:id',
+    '/',
+    validarUserJWT,
+    updateUser
+);
+
+router.put(
+    '/role/:id',
     [
         validarUserJWT,
-        check('id', 'No es ID válido').isMongoId(),
-        check('id').custom(existeUserById),
+        check("id", "Invalid ID").not().isEmpty(),
+        check("role", "Invalid role. Valid role are: USER or ADMIN").isIn(["USER", "ADMIN"]),
         validarCampos
     ],
-    updateUser
+    updateRole
+);
+
+router.delete(
+    '/',
+    validarUserJWT,
+    deleteUser
 );
 
 export default router;

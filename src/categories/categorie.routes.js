@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { existeCategorieById } from "../helpers/db-validator.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
-import { validatorCategorie } from "../middlewares/validator.js";
 import { saveCategorie, getCategories, getCategorieById, updateCategorie, deleteCategorie, restoreCategorie } from "./categorie.controller.js";
 
 const router = Router();
@@ -12,7 +10,6 @@ router.post(
     '/',
     [
         validarUserJWT,
-        validatorCategorie,
         validarCampos
     ],
     saveCategorie
@@ -24,10 +21,9 @@ router.get(
 );
 
 router.get(
-    '/findCategorie/:id',
+    '/:id',
     [
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCategorieById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     getCategorieById
@@ -37,9 +33,7 @@ router.put(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCategorieById),
-        validatorCategorie,
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     updateCategorie
@@ -49,8 +43,7 @@ router.delete(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCategorieById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     deleteCategorie
@@ -60,8 +53,7 @@ router.put(
     '/restore/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCategorieById),
+        check('id', 'No es un ID válido').not().isEmpty(),
         validarCampos
     ],
     restoreCategorie

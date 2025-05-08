@@ -1,35 +1,31 @@
 import Categorie from './categorie.model.js';
 import Publication from '../publications/publication.model.js';
 import { request, response } from 'express';
+import { crearCategoriaSiNoExiste, existeCategoriaById, noCategoriaGeneral, soloAdmin, statusCategoria } from '../helpers/db-validator-categories.js';
 
 export const saveCategorie = async (req, res) => {
     try {
         
-        const data = req.body;
+        const data = req.body || {};
+
+        await soloAdmin(req);
 
         const categorie = await Categorie.create({
-            name: data.name.toLowerCase(),
+            name: data.name,
             description: data.description
         });
-
-        if (req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: 'No tienes permisos para guardar categorias'
-            });
-        }
 
         res.status(200).json({
             success: true,
             msg: 'Categoría guardada exitosamente',
             categorie
         });
+
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al guardar la categoría',
-            error
+            error: error.message
         });
     }
 }
@@ -37,7 +33,7 @@ export const saveCategorie = async (req, res) => {
 export const getCategories = async (req = request, res = response) => {
     try {
         
-        const { limite = 10, desde = 0 } = req.body;
+        const { limite = 10, desde = 0 } = req.query || {};
         const query = { estado: true };
 
         const [ total, categories ] = await Promise.all([
@@ -50,14 +46,15 @@ export const getCategories = async (req = request, res = response) => {
         res.status(200).json({
             success: true,
             total,
+            msg: "Categorias obtenidas exitosamente!!",
             categories
         });
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al obtener las categorías',
-            error
+            error: error.message
         });
     }
 }
@@ -65,34 +62,23 @@ export const getCategories = async (req = request, res = response) => {
 export const getCategorieById = async (req, res) => {
     try {
         
-        const { id } = req.params;
+        const { id } = req.params || {};
+        await existeCategoriaById(id);
 
         const categorie = await Categorie.findById(id);
-
-        if (categorie.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Esta categoría no esta disponible'
-            });
-        }
-
-        if (!categorie) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Categoría no encontrada'
-            });
-        }
+        await statusCategoria(categorie);
 
         res.status(200).json({
             success: true,
+            msg: "Categoria obtenida exitosamente!!",
             categorie
         });
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
-            msg: 'Error al obtener la categoría por ID',
-            error
+            msg: 'Error al obtener la categoría',
+            error: error.message
         });
     }
 }
@@ -100,49 +86,20 @@ export const getCategorieById = async (req, res) => {
 export const updateCategorie = async (req, res = response) => {
     try {
         
-        const { id } = req.params;
-        const { _id, ...data } = req.body;
-        let { name } = req.body;
-
-        if (name) {
-            name = name.toLowerCase();
-            data.name = name;
-        }
-
+        const { id } = req.params || {};
+        const { _id, ...data } = req.body || {};
+        
+        await existeCategoriaById(id);
+        
         const categorie = await Categorie.findById(id);
-
-        if (!categorie) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Categoría no encontrada'
-            });
-        }
-
-        const categorieGeneral = await Categorie.findOne({ name: "General".toLowerCase() });
+        await statusCategoria(categorie);
+        await soloAdmin(req);
         
-        if (categorieGeneral && id === categorieGeneral._id.toString()) {
-            return res.status(400).json({
-                success: false,
-                msg: 'No puedes editar la categoría por defecto General'
-            })
-        }
-        
-        if (categorie.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Esta categoría no esta disponible'
-            });
-        }
-
-        if (req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: 'No tienes permisos para editar categorias'
-            });
-        }
+        const categorieGeneral = await Categorie.findOne({ name: "general" });
+        await noCategoriaGeneral(categorieGeneral, id);
 
         const updateCategorie = await Categorie.findByIdAndUpdate(id, data, { new: true });
-
+        
         if (categorie.name !== updateCategorie.name) {
             await Publication.updateMany(
                 { categorie: id },
@@ -152,15 +109,15 @@ export const updateCategorie = async (req, res = response) => {
 
         res.status(200).json({
             success: true,
-            msg: 'Categoría actualizada exitosamente',
+            msg: 'Categoría actualizada exitosamente!!',
             updateCategorie
         });
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al actualizar la categoría',
-            error
+            error: error.message
         });
     }
 }
@@ -168,99 +125,64 @@ export const updateCategorie = async (req, res = response) => {
 export const deleteCategorie = async (req, res = response) => {
     try {
         
-        const { id } = req.params;
-
-        
-        const authenticatedCategorie = req.categorie;
-
+        const { id } = req.params || {};
+        await existeCategoriaById(id);
         await Publication.deleteMany({ categorie: id });
-        
-        if (req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: 'No tienes permisos para eliminar categorias'
-            });
-        }
-        
-        const categorieGeneral = await Categorie.findOne({ name: "General".toLowerCase() });
-        
-        if (categorieGeneral && id === categorieGeneral._id.toString()) {
-            return res.status(400).json({
-                success: false,
-                msg: 'No puedes eliminar la categoría por defecto General'
-            })
-        }
-        
-        const categorie = await Categorie.findByIdAndUpdate(id, { estado: false }, { new: true });
+
+        const categorie = await Categorie.findById(id);
+        await soloAdmin(req);
+        await statusCategoria(categorie);
+
+        const categorieGeneral = await Categorie.findOne({ name: "general" });
+        await noCategoriaGeneral(categorieGeneral);
+
+        const categorieUpdate = await Categorie.findByIdAndUpdate(id, { estado: false }, { new: true });
 
         res.status(200).json({
             success: true,
-            msg: 'Categoría eliminada exitosamente',
-            categorie,
-            authenticatedCategorie
+            msg: 'Categoría eliminada exitosamente!!',
+            categorieUpdate
         })
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al eliminar la categoria',
-            error
+            error: error.message
         })
     }
 }
 
 export const restoreCategorie = async (req, res = response) => {
     try {
-        
-        const { id } = req.params;
+
+        const { id } = req.params || {};
+        await existeCategoriaById(id);
+        await soloAdmin(req);
 
         const categorie = await Categorie.findByIdAndUpdate(id, { estado: true }, { new: true });
 
-        const authenticatedCategorie = req.categorie;
-
-        if (req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: 'No tienes permisos para restaurar categorias'
-            });
-        }
-
         res.status(200).json({
             success: true,
-            msg: 'Categoría restaurada exitosamente',
-            categorie,
-            authenticatedCategorie
+            msg: 'Categoría restaurada exitosamente!!',
+            categorie
         })
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al restaurar la categoria',
-            error
+            error: error.message
         })
     }
 }
 
 export const defaultCategorie = async () => {
     try {
-
-        const verifyCategorie = await Categorie.findOne({ name: "General".toLowerCase() });
-
-        if (!verifyCategorie) {
-            const categorieGeneral = new Categorie({
-                name: "General".toLowerCase(),
-                description: "Categoría por defecto para publicaciones sin una categoría especifica. No se puede eliminar ni editar"
-            });
-    
-            await categorieGeneral.save();
-    
-            console.log("Categoria General creada con éxito");
-        } else {
-            console.log("Categoria General ya existe, no se volvio a crear");
-        }
-
-
+        await crearCategoriaSiNoExiste();
     } catch (error) {
-        console.error("Error al crear la categoria General: ", error);
+        console.log(" ");
+        console.error("Error al crear la Categoria General: ", error);
+        console.log(" ");
     }
 }

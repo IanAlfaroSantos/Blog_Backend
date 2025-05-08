@@ -19,13 +19,13 @@ export const validarUserJWT = async (req, res, next) => {
 
         if (!user) {
             return res.status(400).json({
-                msg: "Token de usuario no encontrado"
+                msg: "Usuario no encontrado"
             });
         }
 
         if (user.estado === false) {
             return res.status(400).json({
-                msg: "Token no válido - usuario con estado: false"
+                msg: "Usuario inactivo"
             });
         }
 
@@ -34,8 +34,6 @@ export const validarUserJWT = async (req, res, next) => {
         next();
         
     } catch (e) {
-        
-        console.log(e);
         return res.status(400).json({
             msg: "Token no válido"
         });

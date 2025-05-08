@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { existeCommentById } from "../helpers/db-validator.js";
+import { existeCommentById } from "../helpers/db-validator-comments.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
 import { saveComment, getComments, getCommentById, updateComment, deleteComment } from "./comment.controller.js";

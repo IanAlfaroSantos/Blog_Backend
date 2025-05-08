@@ -12,6 +12,7 @@ import userRoutes from '../src/users/user.routes.js';
 import categorieRoutes from '../src/categories/categorie.routes.js';
 import publicationRoutes from '../src/publications/publication.routes.js';
 import commentRoutes from '../src/comments/comment.routes.js';
+import courseRoutes from '../src/courses/course.routes.js';
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -27,6 +28,7 @@ const routes = (app) => {
     app.use('/opinionManager/v1/categories', categorieRoutes);
     app.use('/opinionManager/v1/publications', publicationRoutes);
     app.use('/opinionManager/v1/comments', commentRoutes);
+    app.use('/opinionManager/v1/courses', courseRoutes);
 };
 
 const conectarDB = async () => {
