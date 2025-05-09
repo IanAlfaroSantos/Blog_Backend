@@ -4,13 +4,14 @@ import Comment from "../comments/comment.model.js";
 import User from "../users/user.model.js"
 import Course from "../courses/course.model.js";
 import { request, response } from "express";
-import { existePublicacionDuplicada, existePublicationById, existeUserCategorieOrCourse, permisoPublication, statusPublication } from "../helpers/db-validator-publications.js";
+import { existePublicacionDuplicada, existePublicationById, existeUserCategorieOrCourse, permisoPublication, requiredImage, statusPublication } from "../helpers/db-validator-publications.js";
 
 export const savePublication = async (req, res) => {
     try {
 
         const data = req.body || {};
-        const user = await User.findOne({ username: data.username.toLowerCase() });
+        const userId = req.user._id;
+        const user = await User.findById(userId);
         const categorie = await Categorie.findOne({ name: data.nameCategorie.toLowerCase() });
         const course = await Course.findOne({ name: data.nameCourse.toLowerCase() });
 
@@ -44,6 +45,35 @@ export const savePublication = async (req, res) => {
             msg: "Error al guardar la publicación",
             error: error.message
         });
+    }
+}
+
+export const uploadPublicationImage = async (req, res) => {
+    try {
+        
+        const { id } = req.params || {};
+        const { image } = req.body || {};
+        
+        await requiredImage(image);
+        await existePublicationById(id);
+
+        const publication = await Publication.findById(id);
+        await permisoPublication(req, publication);
+        
+        publication.image = image;
+        await publication.save();
+
+        res.status(200).json({
+            success: true,
+            msg: "Imagen subida exitosamente!!",
+            publication
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error al subir la imagen",
+            error: error.message
+        })
     }
 }
 

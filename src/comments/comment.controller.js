@@ -2,28 +2,18 @@ import Comment from "./comment.model.js";
 import User from "../users/user.model.js";
 import Publication from "../publications/publication.model.js";
 import { request, response } from "express";
+import { existeCommentById, existeUserOrPublication, permisoComment, statusComment } from "../helpers/db-validator-comments.js";
 
 export const saveComment = async (req, res) => {
     try {
 
-        const { id } = req.params;
-        const data = req.body;
-        const user = await User.findOne({ username: data.username.toLowerCase() });
+        const { id } = req.params || {};
+        const data = req.body || {};
+        const userId = req.user._id;
+        const user = await  User.findById(userId);
         const publication = await Publication.findById(id);
 
-        if (!user) {
-            return res.status(400).json({
-                success: false,
-                msg: "Usuario no encontrado"
-            });
-        }
-
-        if (!publication) {
-            return res.status(400).json({
-                success: false,
-                msg: "Publicación no encontrada"
-            });
-        }
+        await existeUserOrPublication(user, publication)
 
         const comment = await Comment.create({
             ...data,
@@ -46,21 +36,17 @@ export const saveComment = async (req, res) => {
                 }
             })
 
-        const details = {
-            commentDetails
-        }
-
         res.status(200).json({
             success: true,
             msg: "Comentario creado correctamente",
-            details
+            commentDetails
         });
         
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
-            msg: "Error al crear comentario"
+            msg: "Error al crear comentario",
+            error: error.message
         });
     }
 }
@@ -68,7 +54,7 @@ export const saveComment = async (req, res) => {
 export const getComments = async (req = request, res = response) => {
     try {
 
-        const { limite = 10, desde = 0 } = req.body;
+        const { limite = 10, desde = 0 } = req.query || {};
         const query = { estado: true };
 
         const [total, comments] = await Promise.all([
@@ -90,22 +76,26 @@ export const getComments = async (req = request, res = response) => {
         res.status(200).json({
             success: true,
             total,
+            msg: "Comentarios obtenidos existosamente!!",
             comments
         });
         
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al obtener los comentarios',
-            error
+            error: error.message
         });
     }
 }
 
 export const getCommentById = async (req, res) => {
     try {
+        
+        const { id } = req.params || {};
 
-        const { id } = req.params;
+        await existeCommentById(id);
+
         const comment = await Comment.findById(id)
             .populate('user', 'username')
             .populate({
@@ -117,30 +107,19 @@ export const getCommentById = async (req, res) => {
                 }
             })
 
-        if (comment.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Comentario no disponible'
-            });
-        }
-
-        if (!comment) {
-            return res.status(404).json({
-                success: false,
-                msg: 'Comentario no encontrado'
-            });
-        }
+        await statusComment(comment);
 
         res.status(200).json({
             success: true,
+            msg: "Comentario obtenido exitosamente!!",
             comment
         });
         
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             msg: 'Error al obtener comentario por ID',
-            error
+            error: error.message
         });
     }
 }
@@ -148,30 +127,15 @@ export const getCommentById = async (req, res) => {
 export const updateComment = async (req, res = response) => {
     try {
 
-        const { id } = req.params;
+        const { id } = req.params || {};
         const { _id, username, publication, ...data } = req.body;
 
-        const comment = await Comment.findById(id);
-        if (!comment) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Comentario no encontrado'
-            });
-        }
+        await existeCommentById(id);
 
-        if (comment.estado === false) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Este comentario no esta disponible'
-            });
-        }
-        
-        if (req.user._id.toString() !== comment.user.toString() && req.user.role !== "ADMIN") {
-            return res.status(400).json({
-                success: false,
-                msg: "No tiene permiso para actualizar un comentario que no es suyo"
-            });
-        }
+        const comment = await Comment.findById(id);
+
+        await statusComment(comment);
+        await permisoComment(req, comment);
         
         const updateComment = await Comment.findByIdAndUpdate(id, data, { new: true });
 
@@ -193,21 +157,17 @@ export const updateComment = async (req, res = response) => {
                 }
             })
             
-            const details = {
-                commentDetails
-            }
-            
-            res.status(200).json({
-                success: true,
-                msg: 'Comentario actualizado con éxito',
-                details
-            });
+        res.status(200).json({
+            success: true,
+            msg: 'Comentario actualizado exitosamente!!',
+            commentDetails
+        });
             
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 msg: 'Error al actualizar comentario',
-                error
+                error: error.message
             });
         }
     }
@@ -215,39 +175,27 @@ export const updateComment = async (req, res = response) => {
     export const deleteComment = async (req, res = response) => {
         try {
             
-            const { id } = req.params;
-            
-            const authenticatedComment = req.comment;
-            
+            const { id } = req.params || {};
+
             const comment = await Comment.findById(id);
-            if (!comment) {
-                return res.status(400).json({
-                    success: false,
-                    msg: 'Comentario no encontrado'
-                });
-            }
+            await existeCommentById(id);
             
-            if (req.user._id.toString() !== comment.user.toString() && req.user.role !== "ADMIN") {
-                return res.status(400).json({
-                    success: false,
-                    msg: "No tiene permiso para actualizar un comentario que no es suyo"
-                });
-            }
+            await statusComment(comment);
+            await permisoComment(req, comment);
 
             const commentDelete = await Comment.findByIdAndUpdate(id, { estado: false }, { new: true });
 
             res.status(200).json({
                 success: true,
-                msg: 'Comentario eliminado con éxito',
-                commentDelete,
-                authenticatedComment
+                msg: 'Comentario eliminado exitosamente!!',
+                commentDelete
             });
 
         } catch (error) {
             return res.status(500).json({
                 success: false,
                 msg: 'Error al eliminar comentario',
-                error
+                error: error.message
         });
     }
 }
