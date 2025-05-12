@@ -24,10 +24,10 @@ const middlewares = (app) => {
 }
 
 const routes = (app) => {
-    app.use('/opinionManager/v1/users', userRoutes);
-    app.use('/opinionManager/v1/categories', categorieRoutes);
-    app.use('/opinionManager/v1/publications', publicationRoutes);
-    app.use('/opinionManager/v1/comments', commentRoutes);
+    app.use('/blog/v1/users', userRoutes);
+    app.use('/blog/v1/categories', categorieRoutes);
+    app.use('/blog/v1/publications', publicationRoutes);
+    app.use('/blog/v1/comments', commentRoutes);
 };
 
 const conectarDB = async () => {
