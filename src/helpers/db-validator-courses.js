@@ -1,31 +1,67 @@
 import Course from '../courses/course.model.js';
 
-export const soloAdmin = async (req) => {
-    if (req.user.role !== "ADMIN") {
-        throw new Error(`No tienes permisos para guardar o editar cursos`);
+export const crearCursoInformatica = async () => {
+    const verifyCourse = await Course.findOne({ name: "informatica" })
+
+    if (!verifyCourse) {
+
+        const courseInformatica = new Course({
+            name: "informatica",
+            description: "Curso de Informatica",
+        });
+    
+        await courseInformatica.save();
+    
+        console.log(" ");
+        console.log("El Curso Informatica fue creado exitosamente!!");
+        console.log(" ");
+    } else {
+        console.log(" ");
+        console.log("El Curso Informatica ya existe, no se creó nuevamente");
+        console.log(" ");
     }
 }
 
-export const existeCursoById = async (id = '') => {
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-        throw new Error(`El ID ${ id } no existe en la base de datos`);
-    }
+export const crearCursoElectronica = async () => {
+    const verifyCourse = await Course.findOne({ name: "electronica" })
 
-    const existeCurso = await Course.findById(id);
+    if (!verifyCourse) {
 
-    if (!existeCurso) {
-        throw new Error(`El ID ${ id } no existe en la base de datos`);
+        const courseElectronica = new Course({
+            name: "electronica",
+            description: "Curso de Electronica",
+        });
+    
+        await courseElectronica.save();
+    
+        console.log(" ");
+        console.log("El Curso Electronica fue creado exitosamente!!");
+        console.log(" ");
+    } else {
+        console.log(" ");
+        console.log("El Curso Electronica ya existe, no se creó nuevamente");
+        console.log(" ");
     }
 }
 
-export const statusCurso = async (curso) => {
-    if (!curso.estado) {
-        throw new Error("Curso inactivo");
-    }
-}
+export const crearCursoDibujo = async () => {
+    const verifyCourse = await Course.findOne({ name: "dibujo" })
 
-export const limiteCursos = async (cursoLimite) => {
-    if (cursoLimite >= 3) {
-        throw new Error("Ya no se pueden agregar más cursos, el limite de cursos es: 3");
+    if (!verifyCourse) {
+
+        const courseDibujo = new Course({
+            name: "dibujo",
+            description: "Curso de Dibujo",
+        });
+    
+        await courseDibujo.save();
+    
+        console.log(" ");
+        console.log("El Curso Dibujo fue creado exitosamente!!");
+        console.log(" ");
+    } else {
+        console.log(" ");
+        console.log("El Curso Dibujo ya existe, no se creó nuevamente");
+        console.log(" ");
     }
 }
