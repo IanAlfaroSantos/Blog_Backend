@@ -35,6 +35,10 @@ const PublicationSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: "Comment"
     }],
+    image: {
+        type: String,
+        default: null
+    },
     estado: {
         type: Boolean,
         default: true

@@ -35,7 +35,13 @@ export const statusPublication = async (publication) => {
 
 export const permisoPublication = async (req, publication) => {
     if (req.user._id.toString() !== publication.user.toString() && req.user.role !== "ADMIN") {
-        throw new Error("No tiene permiso para actualizar una publicación que no es suya");
+        throw new Error("No tiene permiso para actualizar o eliminar una publicación que no es suya");
+    }
+}
+
+export const requiredImage = async (image= '') => {
+    if (!image) {
+        throw new Error("La imagen es requerida");
     }
 }
 

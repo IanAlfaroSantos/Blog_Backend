@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { existeCommentById } from "../helpers/db-validator-comments.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
 import { saveComment, getComments, getCommentById, updateComment, deleteComment } from "./comment.controller.js";
@@ -9,6 +8,7 @@ const router = Router();
 
 router.post(
     '/:id',
+    validarUserJWT,
     validarCampos,
     saveComment
 );
@@ -19,10 +19,9 @@ router.get(
 );
 
 router.get(
-    '/findComment/:id',
+    '/:id',
     [
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCommentById),
+        check('id', 'Invalid ID').not().isEmpty(),
         validarCampos
     ],
     getCommentById
@@ -32,8 +31,7 @@ router.put(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCommentById),
+        check('id', 'Invalid ID').not().isEmpty(),
         validarCampos
     ],
     updateComment
@@ -43,8 +41,7 @@ router.delete(
     '/:id',
     [
         validarUserJWT,
-        check('id', 'No es un ID válido').isMongoId(),
-        check('id').custom(existeCommentById),
+        check('id', 'Invalid ID').not().isEmpty(),
         validarCampos
     ],
     deleteComment
