@@ -3,25 +3,21 @@ import Publication from '../publications/publication.model.js';
 export const existePublicationById = async (id = '') => {
 
     if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-        throw new Error(`El ID ${ id } no existe en la base de datos`);
+        throw new Error(`El ID ${id} no existe en la base de datos`);
     }
 
     const existePublication = await Publication.findById(id);
 
     if (!existePublication) {
-        throw new Error(`El ID ${ id } no existe en la base de datos`);
+        throw new Error(`El ID ${id} no existe en la base de datos`);
     }
 }
 
-export const existeUserCategorieOrCourse = async (user, categorie, course) => {
+export const existeUserOrCourse = async (user, course) => {
     if (!user) {
         throw new Error(`Usuario no encontrado`);
     }
-    
-    if (!categorie) {
-        throw new Error(`Categoria no encontrado`);
-    }
-    
+
     if (!course) {
         throw new Error(`Curso no encontrado`);
     }
@@ -39,7 +35,7 @@ export const permisoPublication = async (req, publication) => {
     }
 }
 
-export const requiredImage = async (image= '') => {
+export const requiredImage = async (image = '') => {
     if (!image) {
         throw new Error("La imagen es requerida");
     }

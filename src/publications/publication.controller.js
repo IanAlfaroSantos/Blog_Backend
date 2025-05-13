@@ -1,10 +1,9 @@
 import Publication from "./publication.model.js";
-import Categorie from "../categories/categorie.model.js"
 import Comment from "../comments/comment.model.js";
 import User from "../users/user.model.js"
 import Course from "../courses/course.model.js";
 import { request, response } from "express";
-import { existePublicacionDuplicada, existePublicationById, existeUserCategorieOrCourse, permisoPublication, requiredImage, statusPublication } from "../helpers/db-validator-publications.js";
+import { existePublicacionDuplicada, existePublicationById, existeUserOrCourse, permisoPublication, requiredImage, statusPublication } from "../helpers/db-validator-publications.js";
 
 export const savePublication = async (req, res) => {
     try {
@@ -12,25 +11,21 @@ export const savePublication = async (req, res) => {
         const data = req.body || {};
         const userId = req.user._id;
         const user = await User.findById(userId);
-        const categorie = await Categorie.findOne({ name: data.nameCategorie.toLowerCase() });
         const course = await Course.findOne({ name: data.nameCourse.toLowerCase() });
 
-        await existeUserCategorieOrCourse(user, categorie, course);
+        await existeUserOrCourse(user, course);
         await existePublicacionDuplicada(data.title, data.content, user._id);
 
         const publication = await Publication.create({
             ...data,
             user: user._id,
             username: user.username,
-            categorie: categorie._id,
-            nameCategorie: categorie.name,
             course: course._id,
             nameCourse: course.name
         });
 
         const publicationDetails = await Publication.findById(publication._id)
             .populate('user', 'username')
-            .populate('categorie', 'name')
             .populate('course', 'name');
 
         res.status(200).json({
@@ -87,7 +82,6 @@ export const getPublications = async (req = request, res = response) => {
             Publication.countDocuments(query),
             Publication.find(query)
             .populate('user', 'username')
-            .populate('categorie', 'name')
             .populate('course', 'name')
             .populate({
                 path: 'comment',
@@ -127,7 +121,6 @@ export const getPublicationById = async (req, res) => {
 
         const publication = await Publication.findById(id)
             .populate('user', 'username')
-            .populate('categorie', 'name')
             .populate('course', 'name')
             .populate({
                 path: 'comment',
@@ -161,6 +154,7 @@ export const updatePublication = async (req, res = response) => {
 
         const { id } = req.params;
         const { _id, username, ...data } = req.body;
+        const user = req.user._id;
         
         await existePublicationById(id);
 
@@ -168,20 +162,16 @@ export const updatePublication = async (req, res = response) => {
         await statusPublication(publication);
         await permisoPublication(req, publication);
         
-        const user = await User.findOne({ username: username.toLowerCase() });
-        const categorie = await Categorie.findOne({ name: data.nameCategorie.toLowerCase() });
         const course = await Course.findOne({ name: data.nameCourse.toLowerCase() });
-        await existeUserCategorieOrCourse(user, categorie, course);
+        await existeUserOrCourse(user, course);
         await existePublicacionDuplicada(data.title, data.content, req.user._id, id);
 
-        data.categorie = categorie._id;
         data.course = course._id;
 
         await Publication.findByIdAndUpdate(id, data, { new: true });
 
         const publicationDetails = await Publication.findById(publication._id)
             .populate('user', 'username')
-            .populate('categorie', 'name')
             .populate('course', 'name');
 
         res.status(200).json({
@@ -191,6 +181,7 @@ export const updatePublication = async (req, res = response) => {
         });
         
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             msg: "Error al actualizar publicación",

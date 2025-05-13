@@ -7,9 +7,7 @@ import morgan from 'morgan';
 import { dbConnection } from './mongo.js';
 import limiter from "../src/middlewares/validar-cant-peticiones.js";
 import { createAddAdmin } from '../src/users/user.controller.js';
-import { defaultCategorie } from '../src/categories/categorie.controller.js';
 import userRoutes from '../src/users/user.routes.js';
-import categorieRoutes from '../src/categories/categorie.routes.js';
 import publicationRoutes from '../src/publications/publication.routes.js';
 import commentRoutes from '../src/comments/comment.routes.js';
 import { createCourses } from '../src/courses/course.controller.js';
@@ -25,7 +23,6 @@ const middlewares = (app) => {
 
 const routes = (app) => {
     app.use('/blog/v1/users', userRoutes);
-    app.use('/blog/v1/categories', categorieRoutes);
     app.use('/blog/v1/publications', publicationRoutes);
     app.use('/blog/v1/comments', commentRoutes);
 };
@@ -35,7 +32,6 @@ const conectarDB = async () => {
         await dbConnection();
         console.log('¡¡Conexión a la base de datos exitosa!!');
         await createAddAdmin();
-        await defaultCategorie();
         await createCourses();
     } catch (error) {
         console.error('Error al conectar a la base de datos:', error);
