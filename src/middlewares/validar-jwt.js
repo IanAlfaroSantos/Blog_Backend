@@ -7,7 +7,7 @@ export const validarUserJWT = async (req, res, next) => {
 
     if (!token) {
         return res.status(400).json({
-            msg: "No hay token en la petición"
+            msg: "Para realizar esta acción necesita iniciar sesión"
         });
     }
     

@@ -19,7 +19,7 @@ export const existeUserOrCourse = async (user, course) => {
     }
 
     if (!course) {
-        throw new Error(`Curso no encontrado`);
+        throw new Error(`Curso no encontrado. Cursos existentes: Informatica, Electronica y Dibujo`);
     }
 }
 
