@@ -33,7 +33,7 @@ export const savePublication = async (req, res) => {
             msg: "Publicación guardada exitosamente!!",
             publicationDetails
         });
-        
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -45,16 +45,16 @@ export const savePublication = async (req, res) => {
 
 export const uploadPublicationImage = async (req, res) => {
     try {
-        
+
         const { id } = req.params || {};
         const { image } = req.body || {};
-        
+
         await requiredImage(image);
         await existePublicationById(id);
 
         const publication = await Publication.findById(id);
         await permisoPublication(req, publication);
-        
+
         publication.image = image;
         await publication.save();
 
@@ -81,19 +81,20 @@ export const getPublications = async (req = request, res = response) => {
         const [total, publications] = await Promise.all([
             Publication.countDocuments(query),
             Publication.find(query)
-            .populate('user', 'username')
-            .populate('course', 'name')
-            .populate({
-                path: 'comment',
-                match: { estado: true },
-                select: 'text',
-                populate: {
-                    path: 'user',
-                    select: 'username'
-                }
-            })
-            .skip(Number(desde))
-            .limit(Number(limite))
+                .populate('user', 'username')
+                .populate('course', 'name')
+                .populate({
+                    path: 'comment',
+                    match: { estado: true },
+                    select: 'text',
+                    populate: {
+                        path: 'user',
+                        select: 'username'
+                    }
+                })
+                .skip(Number(desde))
+                .limit(Number(limite))
+                .sort({ createdAt: -1 })
         ])
 
         res.status(200).json({
@@ -139,7 +140,7 @@ export const getPublicationById = async (req, res) => {
             msg: "Publicación obtenida exitosamente!!",
             publication
         });
-        
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -149,19 +150,76 @@ export const getPublicationById = async (req, res) => {
     }
 }
 
+export const getPublicationsByCourse = async (req, res = response) => {
+    try {
+        const { courseName } = req.params || {};
+
+        const validCourses = ['informatica', 'dibujo', 'electronica'];
+        if (!validCourses.includes(courseName.toLowerCase())) {
+            return res.status(400).json({
+                success: false,
+                msg: "El curso no es válido. Los cursos disponibles son: informatica, dibujo y electronica"
+            })
+        }
+
+        const course = await Course.findOne({ name: courseName.toLowerCase() });
+        if (!course) {
+            return res.status(400).json({
+                success: false,
+                msg: "Curso no encontrado"
+            });
+        }
+
+        const publications = await Publication.find({ course: course._id, estado: true })
+            .populate('user', 'username')
+            .populate('course', 'name')
+            .populate({
+                path: 'comment',
+                match: { estado: true },
+                select: 'text',
+                populate: {
+                    path: 'user',
+                    select: 'username'
+                }
+            })
+            .sort({ createdAt: -1 })
+
+        if (publications.length === 0) {
+            return res.status(200).json({
+                success: true,
+                msg: "No existen publicaciones para este curso",
+                publications: []
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            msg: "Publicaciones obtenidas exitosamente para el curso: " + courseName,
+            publications
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error al obtener publicaciones del curso.",
+            error: error.message
+        })
+    }
+}
+
 export const updatePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
         const { _id, username, ...data } = req.body;
         const user = req.user._id;
-        
+
         await existePublicationById(id);
 
         const publication = await Publication.findById(id);
         await statusPublication(publication);
         await permisoPublication(req, publication);
-        
+
         const course = await Course.findOne({ name: data.nameCourse.toLowerCase() });
         await existeUserOrCourse(user, course);
         await existePublicacionDuplicada(data.title, data.content, req.user._id, id);
@@ -179,7 +237,7 @@ export const updatePublication = async (req, res = response) => {
             msg: "Publicación actualizada exitosamente!!",
             publicationDetails
         });
-        
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({
@@ -194,7 +252,7 @@ export const deletePublication = async (req, res = response) => {
     try {
 
         const { id } = req.params;
-        
+
         await existePublicationById(id);
 
         const publication = await Publication.findById(id);
@@ -210,7 +268,7 @@ export const deletePublication = async (req, res = response) => {
             msg: "Publicación eliminada exitosamente!!",
             publicationDelete
         });
-        
+
     } catch (error) {
         return res.status(500).json({
             success: false,

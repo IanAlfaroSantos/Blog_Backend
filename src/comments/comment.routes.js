@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { validarCampos } from "../middlewares/validar-campos.js";
-import { validarUserJWT } from "../middlewares/validar-jwt.js";
+import { validarUserJWTOptional } from "../middlewares/validar-jwt-optional.js";
 import { saveComment, getComments, getCommentById, updateComment, deleteComment } from "./comment.controller.js";
 
 const router = Router();
 
 router.post(
     '/:id',
-    validarUserJWT,
+    validarUserJWTOptional,
     validarCampos,
     saveComment
 );
@@ -30,7 +30,7 @@ router.get(
 router.put(
     '/:id',
     [
-        validarUserJWT,
+        validarUserJWTOptional,
         check('id', 'Invalid ID').not().isEmpty(),
         validarCampos
     ],
@@ -40,7 +40,7 @@ router.put(
 router.delete(
     '/:id',
     [
-        validarUserJWT,
+        validarUserJWTOptional,
         check('id', 'Invalid ID').not().isEmpty(),
         validarCampos
     ],

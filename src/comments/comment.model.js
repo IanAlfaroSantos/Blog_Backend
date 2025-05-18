@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Schema, model } from "mongoose";
 
 const CommentSchema = Schema({
@@ -8,12 +9,15 @@ const CommentSchema = Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: [true, "El usuario que realiza el comentario es requerido"]
     },
     publication: {
         type: Schema.Types.ObjectId,
         ref: "Publication",
         required: [true, "La publicación al que se realiza el comentario es requerido"]
+    },
+    Date: {
+        type: String,
+        default: () => dayjs().format("DD-MM-YYYY")
     },
     estado: {
         type: Boolean,

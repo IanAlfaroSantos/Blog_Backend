@@ -9,16 +9,16 @@ export const saveComment = async (req, res) => {
 
         const { id } = req.params || {};
         const data = req.body || {};
-        const userId = req.user._id;
-        const user = await  User.findById(userId);
+        const userId = req.user?._id || null;
+        const user = userId ? await User.findById(userId) : null;
         const publication = await Publication.findById(id);
 
-        await existeUserOrPublication(user, publication)
+        await existeUserOrPublication(publication)
 
         const comment = await Comment.create({
             ...data,
-            user: user._id,
-            username: user.username,
+            user: user?._id || null,
+            username: user?.username || 'Anonimo',
             publication: publication._id
         });
 
@@ -71,6 +71,7 @@ export const getComments = async (req = request, res = response) => {
             })
             .skip(Number(desde))
             .limit(Number(limite))
+            .sort({ createdAt: -1 })
         ]);
 
         res.status(200).json({

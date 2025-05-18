@@ -13,10 +13,7 @@ export const existeCommentById = async (id = '') => {
     }
 }
 
-export const existeUserOrPublication = async (user, publication) => {
-    if (!user) {
-        throw new Error(`Usuario no encontrado`);
-    }
+export const existeUserOrPublication = async (publication) => {
     
     if (!publication) {
         throw new Error(`Publicación no encontrada`);
@@ -30,6 +27,17 @@ export const statusComment = async (comment) => {
 }
 
 export const permisoComment = async (req, comment) => {
+    if (!comment.user) {
+        if (req.user && req.user.role !== "ADMIN") {
+            throw new Error("No puede editar o eliminar comentarios anónimos");
+        }
+        return;
+    }
+
+    if (!req.user) {
+        throw new Error("Debe iniciar sesión para modificar este comentario");
+    }
+
     if (req.user._id.toString() !== comment.user.toString() && req.user.role !== "ADMIN") {
         throw new Error("No tiene permiso para actualizar o eliminar un comentario que no es suyo");
     }

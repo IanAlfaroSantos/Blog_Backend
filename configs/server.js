@@ -11,6 +11,7 @@ import userRoutes from '../src/users/user.routes.js';
 import publicationRoutes from '../src/publications/publication.routes.js';
 import commentRoutes from '../src/comments/comment.routes.js';
 import { createCourses } from '../src/courses/course.controller.js';
+import courseRoutes from "../src/courses/course.routes.js";
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -25,6 +26,7 @@ const routes = (app) => {
     app.use('/blog/v1/users', userRoutes);
     app.use('/blog/v1/publications', publicationRoutes);
     app.use('/blog/v1/comments', commentRoutes);
+    app.use('/blog/v1/courses', courseRoutes);
 };
 
 const conectarDB = async () => {

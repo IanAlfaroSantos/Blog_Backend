@@ -3,14 +3,13 @@ import { check } from "express-validator";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validarUserJWT } from "../middlewares/validar-jwt.js";
 import { uploadPublicationPicture } from "../middlewares/multer-upload.js";
-import { savePublication, getPublications, getPublicationById, updatePublication, deletePublication, uploadPublicationImage } from "./publication.controller.js";
+import { savePublication, getPublications, getPublicationById, updatePublication, deletePublication, uploadPublicationImage, getPublicationsByCourse } from "./publication.controller.js";
 
 const router = Router();
 
 router.post(
     '/',
     validarUserJWT,
-    validarCampos,
     savePublication
 );
 
@@ -33,6 +32,15 @@ router.get(
         validarCampos
     ],
     getPublicationById
+);
+
+router.get(
+    '/course/:courseName',
+    [
+        check('courseName', 'No es un curso válido').not().isEmpty(),
+        validarCampos
+    ],
+    getPublicationsByCourse
 );
 
 router.put(
