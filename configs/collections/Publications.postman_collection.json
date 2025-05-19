@@ -10,10 +10,16 @@
 			"name": "Add Publication",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNTA4YTUxMGMwNjEzOTE1NGIzNmUiLCJpYXQiOjE3NDcxNDQ5MDgsImV4cCI6MTc0NzE1MjEwOH0.4G0JHv-fKv4VpP3NuibL_M-MaG6-KWogSbeu15P8k6Q",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Dragon Ball Daima\",\r\n    \"content\": \"Dragon Ball Daima Goku se convierte en super sayayin fase 4\",\r\n    \"username\": \"Kevin\",\r\n    \"name\": \"ANiMe\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Superat\",\r\n    \"content\": \"El dolor es temporal, pero el orgullo de haberlo logrado es para siempr\",\r\n    \"nameCourse\": \"Informatica\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,17 +27,55 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/publications/",
+					"raw": "http://localhost:3000/blog/v1/publications/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"publications",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Image Publication",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNTA4YTUxMGMwNjEzOTE1NGIzNmUiLCJpYXQiOjE3NDcxNDQ5MDgsImV4cCI6MTc0NzE1MjEwOH0.4G0JHv-fKv4VpP3NuibL_M-MaG6-KWogSbeu15P8k6Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"image\": \"https://i.redd.it/solo-leveling-wallpaper-blue-purple-variants-v0-9os5yr2irpse1.png?width=3840&format=png&auto=webp&s=907cb6e52820782da44f4d2b5b912e1541934264\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/blog/v1/publications/image/682351b4510c06139154b3a1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"v1",
+						"publications",
+						"image",
+						"682351b4510c06139154b3a1"
 					]
 				}
 			},
@@ -43,14 +87,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/publications?limite=10&desde=0",
+					"raw": "http://localhost:3000/blog/v1/publications?limite=10&desde=0",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"publications"
 					],
@@ -74,18 +118,40 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/publications/findPublication/67bdc9855aa9dffc0b5ec458",
+					"raw": "http://localhost:3000/blog/v1/publications/682351b4510c06139154b3a1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"publications",
-						"findPublication",
-						"67bdc9855aa9dffc0b5ec458"
+						"682351b4510c06139154b3a1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Publication By Course",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/blog/v1/publications/course/dibujo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"v1",
+						"publications",
+						"course",
+						"dibujo"
 					]
 				}
 			},
@@ -98,13 +164,13 @@
 				"header": [
 					{
 						"key": "x-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY2NzE5NDU0YmQ2YmZlNjFjYjkiLCJpYXQiOjE3NDA0OTU3MzgsImV4cCI6MTc0MDQ5OTMzOH0.7nqGQ_p8UZzeoO2pH2l00meHHxpgAkurBEZ7-1CCs_8",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNTA4YTUxMGMwNjEzOTE1NGIzNmUiLCJpYXQiOjE3NDcxNDQ5MDgsImV4cCI6MTc0NzE1MjEwOH0.4G0JHv-fKv4VpP3NuibL_M-MaG6-KWogSbeu15P8k6Q",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Superate\",\r\n    \"content\": \"El dolor es temporal, pero el orgullo de haberlo logrado es para siempre\",\r\n    \"username\": \"Kevin\",\r\n    \"name\": \"MotIvACion\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Superate\",\r\n    \"content\": \"El dolor es temporal, pero el orgullo de haberlo logrado es para siempre\",\r\n    \"nameCourse\": \"Informatica\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,17 +178,17 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/publications/67bdc9855aa9dffc0b5ec458",
+					"raw": "http://localhost:3000/blog/v1/publications/682351b4510c06139154b3a1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"publications",
-						"67bdc9855aa9dffc0b5ec458"
+						"682351b4510c06139154b3a1"
 					]
 				}
 			},
@@ -135,22 +201,22 @@
 				"header": [
 					{
 						"key": "x-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkZDYxMGFiM2ZkNTAxMWI0MGZhMzUiLCJpYXQiOjE3NDA0OTY4OTAsImV4cCI6MTc0MDUwMDQ5MH0.myGlN5L3F1HU8KtkZhDebHEE8KHK8QTd2ngGIvJ2VLA",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNTA4YTUxMGMwNjEzOTE1NGIzNmUiLCJpYXQiOjE3NDcxNDQ5MDgsImV4cCI6MTc0NzE1MjEwOH0.4G0JHv-fKv4VpP3NuibL_M-MaG6-KWogSbeu15P8k6Q",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/publications/67bde03b20e03a8da6340219",
+					"raw": "http://localhost:3000/blog/v1/publications/682351b4510c06139154b3a1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"publications",
-						"67bde03b20e03a8da6340219"
+						"682351b4510c06139154b3a1"
 					]
 				}
 			},

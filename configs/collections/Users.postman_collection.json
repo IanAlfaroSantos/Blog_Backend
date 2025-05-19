@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Jesus\",\r\n    \"surname\": \"Sis\",\r\n    \"username\": \"Heber\",\r\n    \"email\": \"jsis@gmail.com\",\r\n    \"password\": \"33333333\",\r\n    \"phone\": \"46545465\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Alejandro\",\r\n    \"surname\": \"Cuxun\",\r\n    \"username\": \"Cuxun123\",\r\n    \"email\": \"cuxun@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"phone\": \"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,14 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users/register",
+					"raw": "http://localhost:3000/blog/v1/users/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"users",
 						"register"
@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"Kevin\",\r\n    \"password\": \"11111111\"\r\n}",
+					"raw": "{\r\n    \"username\": \"cuxun123\",\r\n    \"password\": \"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,14 +52,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users/login",
+					"raw": "http://localhost:3000/blog/v1/users/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"users",
 						"login"
@@ -74,26 +74,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users?limite=10&desde=0",
+					"raw": "http://localhost:3000/blog/v1/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
-						"users"
-					],
-					"query": [
-						{
-							"key": "limite",
-							"value": "10"
-						},
-						{
-							"key": "desde",
-							"value": "0"
-						}
+						"users",
+						""
 					]
 				}
 			},
@@ -103,19 +94,49 @@
 			"name": "Search User",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNDIzNTAyYWFkNmUxNDQwZWI5NDEiLCJpYXQiOjE3NDcxNDQ4NTAsImV4cCI6MTc0NzE1MjA1MH0.1XkFYSOmjutIbRvW1BdZNcceDlfkJkvyLV34PnsHYE0",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users/67bc795415d64e9c15c65f63",
+					"raw": "http://localhost:3000/blog/v1/users/search/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"users",
-						"67bc795415d64e9c15c65f63"
+						"search",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search User By Role",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/blog/v1/users/role/USER",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"v1",
+						"users",
+						"role",
+						"USER"
 					]
 				}
 			},
@@ -128,13 +149,13 @@
 				"header": [
 					{
 						"key": "x-token",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2I3MjhjMzExODhmZjlmMTcyYmMyM2IiLCJpYXQiOjE3NDAwNTc1MjEsImV4cCI6MTc0MDA2MTEyMX0.yBxBRgPEiWdbROmEqHt3aTIX7IVQBWaTRXrjhMk_oZM",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODI1MGM3ZDliM2YxNWIyMmVjNGQ1ZWIiLCJpYXQiOjE3NDcyODg2NjksImV4cCI6MTc0NzI5NTg2OX0.i0I-SPfdS5sOSoLFmqB-mLypbxsIbsnYRqQcU5NsfHI",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Pablo\",\r\n    \"surname\": \"Castillo\",\r\n    \"username\": \"Pablo10\",\r\n    \"email\": \"pablo10@gmail.com\",\r\n    \"currentPassword\": \"11111112\",\r\n    \"password\": \"11111111\",\r\n    \"phone\": \"21545152\",\r\n    \"role\": \"ADMIN\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Alejandro\",\r\n    \"surname\": \"Cuxun\",\r\n    \"username\": \"Cuxun123\",\r\n    \"email\": \"cuxun@gmail.com\",\r\n    \"currentPassword\": \"12345678\",\r\n    \"password\": \"12345678\",\r\n    \"phone\": \"21545151\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -142,17 +163,92 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/opinionManager/v1/users/67b729761188ff9f172bc23e",
+					"raw": "http://localhost:3000/blog/v1/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"opinionManager",
+						"blog",
 						"v1",
 						"users",
-						"67b729761188ff9f172bc23e"
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Role",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNDIzNTAyYWFkNmUxNDQwZWI5NDEiLCJpYXQiOjE3NDcxNDQ4NTAsImV4cCI6MTc0NzE1MjA1MH0.1XkFYSOmjutIbRvW1BdZNcceDlfkJkvyLV34PnsHYE0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/blog/v1/users/role/6823508a510c06139154b36e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"v1",
+						"users",
+						"role",
+						"6823508a510c06139154b36e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2ODIzNTA4YTUxMGMwNjEzOTE1NGIzNmUiLCJpYXQiOjE3NDcxNDQ5MDgsImV4cCI6MTc0NzE1MjEwOH0.4G0JHv-fKv4VpP3NuibL_M-MaG6-KWogSbeu15P8k6Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Cuxun123\",\r\n    \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/blog/v1/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"v1",
+						"users",
+						""
 					]
 				}
 			},

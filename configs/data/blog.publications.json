@@ -1,0 +1,163 @@
+[{
+  "_id": {
+    "$oid": "682a66a226610d22dd44ecdf"
+  },
+  "title": "Metodologia Scrum",
+  "content": "Es un proceso para llevar a cabo un conjunto de tareas de forma regular con el objetivo principal de trabajar de manera colaborativa, es decir, para fomentar el trabajo en equipo.",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a64"
+  },
+  "comment": [],
+  "image": "https://ausum.cloud/wp-content/uploads/2023/11/Scrum-Process_Articulo_Semana-32_2022_1-scaled-1.webp",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:00:50",
+  "createdAt": {
+    "$date": "2025-05-18T23:00:50.496Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:00:50.496Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a670926610d22dd44ecf6"
+  },
+  "title": "Ciberseguridad",
+  "content": "La ciberseguridad, también conocida como seguridad digital, es la práctica de proteger su información digital, dispositivos y activos. Esto incluye información personal, cuentas, archivos, fotos e incluso el dinero.",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a64"
+  },
+  "comment": [],
+  "image": "https://latam.kaspersky.com/content/es-mx/images/repository/isc/2020/cyber-security-article.jpg",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:02:33",
+  "createdAt": {
+    "$date": "2025-05-18T23:02:33.388Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:02:33.388Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a675326610d22dd44ed0b"
+  },
+  "title": "Bases de Datos",
+  "content": "Una base de datos es una herramienta para recopilar y organizar información. Las bases de datos pueden almacenar información sobre personas, productos, pedidos u otras cosas.",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a64"
+  },
+  "comment": [
+    {
+      "$oid": "682a68f226610d22dd44edd0"
+    }
+  ],
+  "image": "https://revistabyte.es/wp-content/uploads/2019/02/Comparativa-Bases-de-Datos-2019.jpg.webp",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:03:47",
+  "createdAt": {
+    "$date": "2025-05-18T23:03:47.385Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:10:42.336Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a67d226610d22dd44ed2e"
+  },
+  "title": "Bodegones y naturaleza muerta",
+  "content": "Es una pintura que representa objetos inanimados, como frutas y flores, o recipientes exóticos. En grupo, exploren las razones por las que alguien quisiera pintar este tipo de objetos.",
+  "user": {
+    "$oid": "682a65e526610d22dd44eccb"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a6a"
+  },
+  "comment": [
+    {
+      "$oid": "682a68e326610d22dd44edbc"
+    }
+  ],
+  "image": "https://irp.cdn-website.com/ebb37d3b/dms3rep/multi/memorial-san-angel_naturaleza_01.jpg",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:05:54",
+  "createdAt": {
+    "$date": "2025-05-18T23:05:54.189Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:10:28.079Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a682726610d22dd44ed53"
+  },
+  "title": "Graffiti",
+  "content": "Los grafitis son, en términos generales, escritos deformados y estetizados que dejan registro del nombre de su autor, también denominado tag.",
+  "user": {
+    "$oid": "682a65e526610d22dd44eccb"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a6a"
+  },
+  "comment": [
+    {
+      "$oid": "682a68a926610d22dd44ed86"
+    },
+    {
+      "$oid": "682a691926610d22dd44ee02"
+    }
+  ],
+  "image": "https://www.kunstloft.es/revista/wp-content/uploads/2023/08/colorful-graffiti-1024x710.jpg",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:07:19",
+  "createdAt": {
+    "$date": "2025-05-18T23:07:19.542Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:11:21.844Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a688e26610d22dd44ed76"
+  },
+  "title": "Microelectrónica",
+  "content": "La microelectrónica es un subcampo de la electrónica. Como su nombre indica, la microelectrónica se relaciona con el estudio y la fabricación de diseños y componentes electrónicos muy pequeños.",
+  "user": {
+    "$oid": "682a4ac52424633736462fc1"
+  },
+  "course": {
+    "$oid": "6829f0a708479d9169d75a67"
+  },
+  "comment": [
+    {
+      "$oid": "682a68c526610d22dd44eda8"
+    },
+    {
+      "$oid": "682a692826610d22dd44ee19"
+    },
+    {
+      "$oid": "682a694026610d22dd44ee30"
+    }
+  ],
+  "image": "https://www.agenciatss.com.ar/wp-content/uploads/2017/08/a0.jpg",
+  "estado": true,
+  "DateAndTime": "18-05-2025 17:09:02",
+  "createdAt": {
+    "$date": "2025-05-18T23:09:02.911Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:12:00.856Z"
+  }
+}]

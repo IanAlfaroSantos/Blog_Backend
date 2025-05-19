@@ -1,0 +1,134 @@
+[{
+  "_id": {
+    "$oid": "682a68a926610d22dd44ed86"
+  },
+  "text": "Muchas Gracias por la información",
+  "user": {
+    "$oid": "682a4ac52424633736462fc1"
+  },
+  "publication": {
+    "$oid": "682a682726610d22dd44ed53"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:09:29.221Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:09:29.221Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a68c526610d22dd44eda8"
+  },
+  "text": "Exelente publicación",
+  "user": null,
+  "publication": {
+    "$oid": "682a688e26610d22dd44ed76"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:09:57.377Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:09:57.377Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a68e326610d22dd44edbc"
+  },
+  "text": "El hermoso es el arte",
+  "user": null,
+  "publication": {
+    "$oid": "682a67d226610d22dd44ed2e"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:10:27.879Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:10:27.879Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a68f226610d22dd44edd0"
+  },
+  "text": "Gracias profe por la info!!",
+  "user": null,
+  "publication": {
+    "$oid": "682a675326610d22dd44ed0b"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:10:42.322Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:10:42.322Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a691926610d22dd44ee02"
+  },
+  "text": "Estupendo!!!",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "publication": {
+    "$oid": "682a682726610d22dd44ed53"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:11:21.826Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:11:21.826Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a692826610d22dd44ee19"
+  },
+  "text": "Que buen tema!!!!",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "publication": {
+    "$oid": "682a688e26610d22dd44ed76"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:11:36.857Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:11:36.857Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682a694026610d22dd44ee30"
+  },
+  "text": "Increible como es la Microelectrónica!!!!!",
+  "user": {
+    "$oid": "682a65b926610d22dd44ecc1"
+  },
+  "publication": {
+    "$oid": "682a688e26610d22dd44ed76"
+  },
+  "estado": true,
+  "Date": "18-05-2025",
+  "createdAt": {
+    "$date": "2025-05-18T23:12:00.840Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T23:12:00.840Z"
+  }
+}]
