@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "682b373a659ee101f7d1a764"
+  },
+  "name": "informatica",
+  "description": "Curso de Informatica",
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-05-19T13:50:50.619Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-19T13:50:50.619Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682b373a659ee101f7d1a767"
+  },
+  "name": "electronica",
+  "description": "Curso de Electronica",
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-05-19T13:50:50.624Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-19T13:50:50.624Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682b373a659ee101f7d1a76a"
+  },
+  "name": "dibujo",
+  "description": "Curso de Dibujo",
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-05-19T13:50:50.630Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-19T13:50:50.630Z"
+  }
+}]
